@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('apepat', 100);
             $table->string('apemat', 100);
             $table->date('fechanac');
-            $table->string('estado', 50);
+            $table->enum('activo', ['si', 'no']);
             $table->timestamps();
         });
     }

@@ -25,7 +25,8 @@
             <img class="w-96 h-auto" src="https://ciosad.com.co/wp-content/uploads/2020/11/citas-01-1024x1024.png" alt="Showcase Image">
         </div>
     </div>
+    <div class=" absolute bottom-0 w-full">
+        @include("footer")
+    </div>
 </body>
 </html>
-
-@include("footer")
