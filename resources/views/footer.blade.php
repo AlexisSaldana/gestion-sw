@@ -1,5 +1,5 @@
 <!--Footer container-->
-<footer class="flex flex-col items-center bg-slate-900 text-center text-surface">
+<footer class="w-full flex flex-col items-center bg-slate-900 text-center text-surface">
   <div class="container px-6 pt-6">
     <!-- Social media icons container -->
     <div class="mb-6 flex justify-center space-x-2">
