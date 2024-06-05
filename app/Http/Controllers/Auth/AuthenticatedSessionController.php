@@ -42,17 +42,8 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // Redirigir según el rol del usuario
-        switch ($user->rol) {
-            case 'medico':
-                return redirect()->route('UsuarioDoctor');
-            case 'secretaria':
-                return redirect()->route('UsuarioSecretaria');
-            case 'colaborador':
-                return redirect()->route('UsuarioDoctorColaborador');
-            default:
-                return redirect()->route('dashboard');
-        }
+        return redirect(route('dashboardSecretaria'));
+
     }
 
     /**
