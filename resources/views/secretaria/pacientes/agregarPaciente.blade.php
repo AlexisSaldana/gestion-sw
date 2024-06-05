@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-guest-layout>
-        <form method="POST" action="{{ route('registrarUsuario.store') }}">
+        <form method="POST" action="{{ route('registrarPaciente.store') }}">
             @csrf
 
             <!-- Nombres -->
