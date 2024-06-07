@@ -19,6 +19,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">Precio</th>
+                                    <th scope="col" class="px-6 py-4">Activo</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
                             </thead>
@@ -29,6 +30,7 @@
                                     <tr>
                                         <td class="px-6 py-4">{{ $producto->nombre }}</td>
                                         <td class="px-6 py-4">{{ $producto->precio }}</td>
+                                        <td class="px-6 py-4">{{ $producto->activo }}</td>
                                         <td class="px-6 py-4">
                                             <a href="{{ route('productos.editar', $producto->id) }}" class="text-blue-500 hover:text-blue-700">Editar</a>
                                             <form action="{{ route('productos.eliminar', $producto->id) }}" method="POST" class="inline-block">
@@ -41,6 +43,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @if($productos->isEmpty())
+                            <p class="text-center text-gray-500 mt-4">No hay productos registrados.</p>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -20,7 +20,6 @@
                                     <th scope="col" class="px-6 py-4">Nombres</th>
                                     <th scope="col" class="px-6 py-4">Apellido Paterno</th>
                                     <th scope="col" class="px-6 py-4">Apellido Materno</th>
-                                    <th scope="col" class="px-6 py-4">Fecha de Nacimiento</th>
                                     <th scope="col" class="px-6 py-4">Activo</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
@@ -33,7 +32,6 @@
                                         <td class="px-6 py-4">{{ $paciente->nombres }}</td>
                                         <td class="px-6 py-4">{{ $paciente->apepat }}</td>
                                         <td class="px-6 py-4">{{ $paciente->apemat }}</td>
-                                        <td class="px-6 py-4">{{ $paciente->fechanac }}</td>
                                         <td class="px-6 py-4">{{ $paciente->activo }}</td>
                                         <td class="px-6 py-4">
                                             <a href="{{ route('pacientes.editar', $paciente->id) }}" class="text-blue-500 hover:text-blue-700">Editar</a>
@@ -47,6 +45,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @if($pacientes->isEmpty())
+                            <p class="text-center text-gray-500 mt-4">No hay citas registradas.</p>
+                        @endif
                     </div>
                 </div>
             </div>

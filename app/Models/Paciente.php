@@ -16,4 +16,10 @@ class Paciente extends Model
         'fechanac',
         'activo',
     ];
+
+    // Relación con el modelo Citas
+    public function citas()
+    {
+        return $this->hasMany(Citas::class, 'pacienteid');
+    }
 }

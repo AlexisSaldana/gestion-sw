@@ -41,7 +41,7 @@
             </div>
 
             <!-- Rol -->
-            <div class="mt-4">
+            <div class="mt-4 col-span-2">
                 <x-input-label for="rol" :value="__('Rol')" />
                 <select id="rol" name="rol" class="block mt-1 w-full" required>
                     <option value="medico" {{ old('rol') == 'medico' ? 'selected' : '' }}>Médico</option>
@@ -49,16 +49,6 @@
                     <option value="colaborador" {{ old('rol') == 'colaborador' ? 'selected' : '' }}>Colaborador</option>
                 </select>
                 <x-input-error :messages="$errors->get('rol')" class="mt-2" />
-            </div>
-
-            <!-- Activo -->
-            <div class="mt-4">
-                <x-input-label for="activo" :value="__('Activo')" />
-                <select id="activo" name="activo" class="block mt-1 w-full" required>
-                    <option value="si" {{ old('activo') == 'si' ? 'selected' : '' }}>Sí</option>
-                    <option value="no" {{ old('activo') == 'no' ? 'selected' : '' }}>No</option>
-                </select>
-                <x-input-error :messages="$errors->get('activo')" class="mt-2" />
             </div>
 
             <!-- Correo Electrónico -->

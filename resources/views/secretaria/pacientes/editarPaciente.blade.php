@@ -32,16 +32,6 @@
                 <x-input-error :messages="$errors->get('fechanac')" class="mt-2" />
             </div>
 
-            <!-- Activo -->
-            <div class="mt-4">
-                <x-input-label for="activo" :value="__('Activo')" />
-                <select id="activo" name="activo" class="block mt-1 w-full" required>
-                    <option value="si" {{ $paciente->activo == 'si' ? 'selected' : '' }}>Sí</option>
-                    <option value="no" {{ $paciente->activo == 'no' ? 'selected' : '' }}>No</option>
-                </select>
-                <x-input-error :messages="$errors->get('activo')" class="mt-2" />
-            </div>
-
             <div class="flex items-center justify-end mt-4">
                 <x-primary-button class="ml-4">
                     {{ __('Actualizar Paciente') }}

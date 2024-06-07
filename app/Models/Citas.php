@@ -12,6 +12,20 @@ class Citas extends Model
     protected $fillable = [
         'fecha',
         'hora',
-        'estado'
+        'activo',
+        'pacienteid',
+        'usuariomedicoid'
     ];
+
+    // Relación con el modelo Paciente
+    public function paciente()
+    {
+        return $this->belongsTo(Paciente::class, 'pacienteid');
+    }
+
+    // Relación con el modelo User (medico)
+    public function usuarioMedico()
+    {
+        return $this->belongsTo(User::class, 'usuariomedicoid');
+    }
 }

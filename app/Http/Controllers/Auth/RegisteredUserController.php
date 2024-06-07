@@ -36,7 +36,6 @@ class RegisteredUserController extends Controller
             'fechanac' => ['required', 'date'],
             'telefono' => ['required', 'string', 'max:20'],
             'rol' => ['required', 'in:medico,secretaria,colaborador'],
-            'activo' => ['required', 'in:si,no'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -48,7 +47,6 @@ class RegisteredUserController extends Controller
             'fechanac' => $request->fechanac,
             'telefono' => $request->telefono,
             'rol' => $request->rol,
-            'activo' => $request->activo,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);

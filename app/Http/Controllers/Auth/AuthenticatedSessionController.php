@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -42,8 +41,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        return redirect(route('dashboardSecretaria'));
-
+        return $this->redirectToRole($user);
     }
 
     /**
@@ -58,5 +56,22 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    /**
+     * Redirect to different routes based on user role.
+     */
+    protected function redirectToRole($user)
+    {
+        switch ($user->rol) {
+            case 'medico':
+                return redirect()->route('dashboardSecretaria');
+            case 'secretaria':
+                return redirect()->route('dashboardSecretaria');
+            case 'colaborador':
+                return redirect()->route('dashboardColaborador');
+            default:
+                return redirect('/');
+        }
     }
 }

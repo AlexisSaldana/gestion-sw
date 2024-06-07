@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
             $table->decimal('precio', 10, 2);
+            $table->enum('activo', ['si', 'no'])->default('si');
             $table->timestamps();
         });
     }

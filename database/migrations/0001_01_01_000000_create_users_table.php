@@ -16,7 +16,7 @@ return new class extends Migration
             $table->date('fechanac');
             $table->string('telefono', 20);
             $table->enum('rol', ['medico', 'secretaria', 'colaborador']);
-            $table->enum('activo', ['si', 'no']);
+            $table->enum('activo', ['si', 'no'])->default('si');
             $table->string('email')->unique();
             $table->string('password');
             $table->timestamps();

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('fecha');
             $table->time('hora');
-            $table->string('estado', 50);
+            $table->enum('activo', ['si', 'no'])->default('si');
             $table->foreignId('pacienteid')->constrained('pacientes')->onDelete('cascade');
             $table->foreignId('usuariomedicoid')->constrained('users')->onDelete('cascade');
             $table->timestamps();

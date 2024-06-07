@@ -50,4 +50,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relación con el modelo Citas
+    public function citas()
+    {
+        return $this->hasMany(Citas::class, 'usuariomedicoid');
+    }
 }
