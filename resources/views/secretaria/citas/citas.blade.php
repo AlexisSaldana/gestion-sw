@@ -32,7 +32,9 @@
                                         <td class="px-6 py-4">{{ $cita->hora }}</td>
                                         <td class="px-6 py-4">{{ $cita->activo }}</td>
                                         <td class="px-6 py-4">
+                                            <!-- Enlace para editar la cita -->
                                             <a href="{{ route('citas.editar', $cita->id) }}" class="text-blue-500 hover:underline">Editar</a>
+                                            <!-- Formulario para eliminar la cita -->
                                             <form action="{{ route('citas.eliminar', $cita->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
@@ -43,6 +45,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <!-- Mensaje si no hay citas registradas -->
                         @if($citas->isEmpty())
                             <p class="text-center text-gray-500 mt-4">No hay citas registradas.</p>
                         @endif

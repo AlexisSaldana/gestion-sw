@@ -27,12 +27,14 @@
                             <!-- Table body -->
                             <tbody>
                                 @foreach($productos as $producto)
-                                    <tr>
+                                    <tr class="border-b dark:border-neutral-600">
                                         <td class="px-6 py-4">{{ $producto->nombre }}</td>
                                         <td class="px-6 py-4">{{ $producto->precio }}</td>
                                         <td class="px-6 py-4">{{ $producto->activo }}</td>
                                         <td class="px-6 py-4">
+                                            <!-- Enlace para editar el producto -->
                                             <a href="{{ route('productos.editar', $producto->id) }}" class="text-blue-500 hover:text-blue-700">Editar</a>
+                                            <!-- Formulario para eliminar el producto -->
                                             <form action="{{ route('productos.eliminar', $producto->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
@@ -43,6 +45,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <!-- Mensaje si no hay productos registrados -->
                         @if($productos->isEmpty())
                             <p class="text-center text-gray-500 mt-4">No hay productos registrados.</p>
                         @endif

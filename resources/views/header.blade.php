@@ -18,33 +18,41 @@
 </head>
 <body>
     <header class="bg-gray-100">
+        <!-- Contenedor de navegación principal -->
         <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <!-- Sección del logo y nombre de la empresa -->
             <div class="flex lg:flex-1">
                 <a href="/" class="flex items-center">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9"/>
+                    <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Lede Tech Logo"/>
                     <span class="self-center text-xl font-semibold whitespace-nowrap">Lede Tech</span>
                 </a>
             </div>
 
+            <!-- Sección de enlaces de navegación -->
             <div class="lg:flex lg:gap-x-12">
                 <div class="relative">
+                    <!-- Verifica si las rutas de 'login' existen -->
                     @if (Route::has('login'))
+                        <!-- Navegación de autenticación -->
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
+                                <!-- Enlace al dashboard si el usuario está autenticado -->
                                 <a
                                     href="{{ url('/dashboard') }}"
                                     class="text-black hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2">
                                     Dashboard
                                 </a>
                             @else
+                                <!-- Botón de inicio de sesión si el usuario no está autenticado -->
                                 <x-primary-button class="ms-3">
-                                <a href="{{ route('login') }}">
-                                    
-                                    Log in
-                                </a>
+                                    <a href="{{ route('login') }}">
+                                        Log in
+                                    </a>
                                 </x-primary-button>
 
+                                <!-- Verifica si la ruta de registro existe -->
                                 @if (Route::has('register'))
+                                    <!-- Enlace de registro si la ruta existe -->
                                     <a
                                         href="{{ route('register') }}"
                                         class="text-black bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-ms px-4 lg:px-5 py-2 lg:py-2.5 mr-2">
@@ -56,7 +64,7 @@
                     @endif
                 </div>
             </div>
-        </div>
+        </nav>
     </header>
 </body>
 </html>

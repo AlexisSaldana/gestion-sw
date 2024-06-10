@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Servicio extends Model
 {
     use HasFactory;
+    
+    // Los campos aqui se asignan
 
     protected $fillable = [
         'nombre',

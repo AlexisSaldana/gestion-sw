@@ -34,7 +34,9 @@
                                         <td class="px-6 py-4">{{ $paciente->apemat }}</td>
                                         <td class="px-6 py-4">{{ $paciente->activo }}</td>
                                         <td class="px-6 py-4">
+                                            <!-- Enlace para editar el paciente -->
                                             <a href="{{ route('pacientes.editar', $paciente->id) }}" class="text-blue-500 hover:text-blue-700">Editar</a>
+                                            <!-- Formulario para eliminar el paciente -->
                                             <form action="{{ route('pacientes.eliminar', $paciente->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
@@ -45,6 +47,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <!-- Mensaje si no hay pacientes registrados -->
                         @if($pacientes->isEmpty())
                             <p class="text-center text-gray-500 mt-4">No hay citas registradas.</p>
                         @endif

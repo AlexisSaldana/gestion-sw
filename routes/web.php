@@ -4,11 +4,14 @@ use App\Http\Controllers\SecretariaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Ruta de la página de bienvenida
 Route::get('/', function () {
     return view('welcome');
 });
 
+// Agrupación de rutas que requieren autenticación y verificación de email
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Rutas del perfil de usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -39,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/secretaria/citas/editar/{id}', [SecretariaController::class, 'updateCita'])->name('citas.update');
     Route::delete('/secretaria/citas/eliminar/{id}', [SecretariaController::class, 'eliminarCita'])->name('citas.eliminar');
 
-    // Rutas de Medicos
+    // Rutas de Médicos
     Route::get('/secretaria/medicos', [SecretariaController::class, 'mostrarMedicos'])->name('medicos');
     Route::post('/secretaria/medicos/agregarMedico', [SecretariaController::class, 'storeMedicos'])->name('medicos.store');
     Route::get('/secretaria/medicos/agregar', [SecretariaController::class, 'crearMedico'])->name('medicos.agregar');
@@ -56,5 +59,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/secretaria/servicios/eliminar/{id}', [SecretariaController::class, 'eliminarServicio'])->name('servicios.eliminar');
 });
 
-
+// Incluir las rutas de autenticación generadas por Laravel Breeze
 require __DIR__.'/auth.php';

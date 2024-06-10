@@ -29,32 +29,35 @@
 
                                 <!-- Table body -->
                                 <tbody>
-                                    @foreach($medicos as $medico)
-                                        <tr class="border-b dark:border-neutral-600">
-                                            <td class="px-6 py-4">{{ $medico->nombres }}</td>
-                                            <td class="px-6 py-4">{{ $medico->apepat }}</td>
-                                            <td class="px-6 py-4">{{ $medico->apemat }}</td>
-                                            <td class="px-6 py-4">{{ $medico->email }}</td>
-                                            <td class="px-6 py-4">{{ $medico->telefono }}</td>
-                                            <td class="px-6 py-4">{{ $medico->activo }}</td>
-                                            <td class="px-6 py-4">
-                                                <a href="{{ route('medicos.editar', $medico->id) }}" class="text-blue-500 hover:underline">Editar</a>
-                                                <form action="{{ route('medicos.eliminar', $medico->id) }}" method="POST" class="inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-500 hover:underline ml-2">Eliminar</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            @if($medicos->isEmpty())
-                                <p class="text-center text-gray-500 mt-4">No hay médicos registrados.</p>
-                            @endif
-                        </div>
+                                @foreach($medicos as $medico)
+                                    <tr class="border-b dark:border-neutral-600">
+                                        <td class="px-6 py-4">{{ $medico->nombres }}</td>
+                                        <td class="px-6 py-4">{{ $medico->apepat }}</td>
+                                        <td class="px-6 py-4">{{ $medico->apemat }}</td>
+                                        <td class="px-6 py-4">{{ $medico->email }}</td>
+                                        <td class="px-6 py-4">{{ $medico->telefono }}</td>
+                                        <td class="px-6 py-4">{{ $medico->activo }}</td>
+                                        <td class="px-6 py-4">
+                                            <!-- Enlace para editar el médico -->
+                                            <a href="{{ route('medicos.editar', $medico->id) }}" class="text-blue-500 hover:underline">Editar</a>
+                                            <!-- Formulario para eliminar el médico -->
+                                            <form action="{{ route('medicos.eliminar', $medico->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:underline ml-2">Eliminar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- Mensaje si no hay médicos registrados -->
+                        @if($medicos->isEmpty())
+                            <p class="text-center text-gray-500 mt-4">No hay médicos registrados.</p>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </x-app-layout>

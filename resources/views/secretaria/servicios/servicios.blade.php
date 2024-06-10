@@ -26,29 +26,32 @@
 
                                 <!-- Table body -->
                                 <tbody>
-                                    @foreach($servicios as $servicio)
-                                        <tr class="border-b dark:border-neutral-600">
-                                            <td class="px-6 py-4">{{ $servicio->nombre }}</td>
-                                            <td class="px-6 py-4">{{ $servicio->precio }}</td>
-                                            <td class="px-6 py-4">{{ $servicio->activo }}</td>
-                                            <td class="px-6 py-4">
-                                                <a href="{{ route('servicios.editar', $servicio->id) }}" class="text-blue-500 hover:underline">Editar</a>
-                                                <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST" class="inline-block">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-500 hover:underline ml-2">Eliminar</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            @if($servicios->isEmpty())
-                                <p class="text-center text-gray-500 mt-4">No hay servicios registrados.</p>
-                            @endif
-                        </div>
+                                @foreach($servicios as $servicio)
+                                    <tr class="border-b dark:border-neutral-600">
+                                        <td class="px-6 py-4">{{ $servicio->nombre }}</td>
+                                        <td class="px-6 py-4">{{ $servicio->precio }}</td>
+                                        <td class="px-6 py-4">{{ $servicio->activo }}</td>
+                                        <td class="px-6 py-4">
+                                            <!-- Enlace para editar el servicio -->
+                                            <a href="{{ route('servicios.editar', $servicio->id) }}" class="text-blue-500 hover:underline">Editar</a>
+                                            <!-- Formulario para eliminar el servicio -->
+                                            <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:underline ml-2">Eliminar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <!-- Mensaje si no hay servicios registrados -->
+                        @if($servicios->isEmpty())
+                            <p class="text-center text-gray-500 mt-4">No hay servicios registrados.</p>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </x-app-layout>
