@@ -21,7 +21,7 @@ class ProfileUpdateRequest extends FormRequest
             'apemat' => ['required', 'string', 'max:100'],
             'fechanac' => ['required', 'date'],
             'telefono' => ['required', 'string', 'max:20'],
-            'rol' => ['required', 'in:medico,secretaria,colaborador'],
+            'rol' => ['required', 'in:medico,secretaria,colaborador,admin'],
             'activo' => ['required', 'in:si,no'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
         ];

@@ -66,6 +66,8 @@ class AuthenticatedSessionController extends Controller
         switch ($user->rol) {
             case 'medico':
                 return redirect()->route('dashboardSecretaria');
+            case 'admin':
+                return redirect()->route('dashboardSecretaria');
             case 'secretaria':
                 return redirect()->route('dashboardSecretaria');
             case 'colaborador':

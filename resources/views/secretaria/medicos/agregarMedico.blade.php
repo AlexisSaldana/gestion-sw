@@ -44,6 +44,8 @@
                     <x-input-label for="rol" :value="__('Rol')" />
                     <select id="rol" name="rol" class="block mt-1 w-full" required>
                         <option value="medico" {{ old('rol') == 'medico' ? 'selected' : '' }}>Médico</option>
+                        <option value="secretaria" {{ old('rol') == 'secretaria' ? 'selected' : '' }}>Secretaria</option>
+                        <option value="colaborador" {{ old('rol') == 'colaborador' ? 'selected' : '' }}>Médico Colaborador</option>
                     </select>
                     <x-input-error :messages="$errors->get('rol')" class="mt-2" />
                 </div>

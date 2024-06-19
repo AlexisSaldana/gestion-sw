@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 // Ruta de la página de bienvenida
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');;
 
 // Agrupación de rutas que requieren autenticación y verificación de email
 Route::middleware(['auth', 'verified'])->group(function () {

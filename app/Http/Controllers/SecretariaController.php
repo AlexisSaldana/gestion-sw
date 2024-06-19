@@ -220,9 +220,12 @@ class SecretariaController extends Controller
     // Muestra todos los médicos activos
     public function mostrarMedicos()
     {
-        $medicos = User::where('rol', 'medico')->where('activo', 'si')->get();
-        return view('/secretaria.medicos.medicos', compact('medicos'));
+        $usuarios = User::whereIn('rol', ['medico', 'secretaria', 'colaborador'])
+                        ->where('activo', 'si')
+                        ->get();
+        return view('/secretaria.medicos.medicos', compact('usuarios'));
     }
+    
 
     // Guarda un nuevo médico
     public function storeMedicos(Request $request)
@@ -234,6 +237,7 @@ class SecretariaController extends Controller
             'apemat' => 'required|string|max:255',
             'fechanac' => 'required|date',
             'telefono' => 'required|string|max:20',
+            'rol' => ['required', 'in:medico,secretaria,colaborador,admin'],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -245,9 +249,9 @@ class SecretariaController extends Controller
             'apemat' => $request->apemat,
             'fechanac' => $request->fechanac,
             'telefono' => $request->telefono,
+            'rol' => $request->rol,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'rol' => 'medico',
         ]);
 
         // Redirecciona a la vista de médicos con un mensaje de éxito
@@ -277,6 +281,7 @@ class SecretariaController extends Controller
             'apemat' => 'required|string|max:255',
             'fechanac' => 'required|date',
             'telefono' => 'required|string|max:20',
+            'rol' => ['required', 'in:medico,secretaria,colaborador,admin'],
             'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'password' => 'nullable|string|min:8|confirmed',
         ]);
@@ -289,6 +294,7 @@ class SecretariaController extends Controller
             'apemat' => $request->apemat,
             'fechanac' => $request->fechanac,
             'telefono' => $request->telefono,
+            'rol' => $request->rol,
             'email' => $request->email,
             'password' => $request->password ? bcrypt($request->password) : $medico->password,
         ]);

@@ -13,7 +13,7 @@
                             </a>
                         </div>
                         <!-- Table -->
-                        <table class="min-w-full text-center text-sm whitespace-nowrap">
+                        <table id="citas-table" class="min-w-full text-center text-sm whitespace-nowrap">
                             <!-- Table head -->
                             <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800">
                                 <tr>

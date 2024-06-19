@@ -14,7 +14,24 @@
                 <!-- Hora -->
                 <div class="mt-4">
                     <x-input-label for="hora" :value="__('Hora')" />
-                    <x-text-input id="hora" class="block mt-1 w-full" type="time" name="hora" :value="old('hora')" required autofocus />
+                    <select id="hora" name="hora" class="block mt-1 w-full" required autofocus>
+                        <option value="" disabled selected>Selecciona una hora</option>
+                        @for ($i = 8; $i <= 14; $i++)
+                            @php
+                                $hour = str_pad($i, 2, '0', STR_PAD_LEFT);
+                                $time1 = $hour . ':00';
+                                $time2 = $hour . ':30';
+                            @endphp
+                            <option value="{{ $time1 }}" {{ old('hora') == $time1 ? 'selected' : '' }}>
+                                {{ $time1 }}
+                            </option>
+                            @if($i < 16)
+                                <option value="{{ $time2 }}" {{ old('hora') == $time2 ? 'selected' : '' }}>
+                                    {{ $time2 }}
+                                </option>
+                            @endif
+                        @endfor
+                    </select>
                     <x-input-error :messages="$errors->get('hora')" class="mt-2" />
                 </div>
 
@@ -29,7 +46,7 @@
                         @endforeach
                     </select>
                     <x-input-error :messages="$errors->get('pacienteid')" class="mt-2" />
-                </div>
+                </div>  
 
                 <!-- Usuario Médico -->
                 <div class="mt-4">
@@ -51,5 +68,7 @@
                 </x-primary-button>
             </div>
         </form>
+
+        <div id="calendar"></div>
     </x-guest-layout>
 </x-app-layout>

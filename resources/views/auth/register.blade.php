@@ -47,6 +47,7 @@
                     <option value="medico" {{ old('rol') == 'medico' ? 'selected' : '' }}>Médico</option>
                     <option value="secretaria" {{ old('rol') == 'secretaria' ? 'selected' : '' }}>Secretaria</option>
                     <option value="colaborador" {{ old('rol') == 'colaborador' ? 'selected' : '' }}>Colaborador</option>
+                    <option value="admin" {{ old('rol') == 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
                 <x-input-error :messages="$errors->get('rol')" class="mt-2" />
             </div>
