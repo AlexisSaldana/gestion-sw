@@ -33,7 +33,6 @@
           <h1 class="text-3xl lg:text-5xl font-bold">Cuidando Tu Salud, Cuidando Tu Futuro</h1>
           <p class="text-lg mt-4">Programa tus citas y consultas con nuestros especialistas.</p>
           <div class="d-flex">
-              <a href="{{ route('register') }}" class="btn-get-started">Get Started</a>
             </div>
           </div>
           <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
