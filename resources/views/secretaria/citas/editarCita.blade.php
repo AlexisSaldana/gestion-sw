@@ -7,15 +7,30 @@
             <!-- Fecha -->
             <div class="mt-4 col-span-2">
                 <x-input-label for="fecha" :value="__('Fecha')" />
-                <x-text-input id="fecha" class="block mt-1 w-full" type="date" name="fecha" :value="$cita->fecha" required autofocus />
+                <input id="fecha" class="block mt-1 w-full" type="date" name="fecha" x-model="event_date" required autofocus min="{{ date('Y-m-d') }}" max="{{ date('Y-m-d', strtotime('+1 month')) }}" />
                 <x-input-error :messages="$errors->get('fecha')" class="mt-2" />
             </div>
 
             <!-- Hora -->
             <div class="mt-4">
-                <x-input-label for="hora" :value="__('Hora')" />
-                <x-text-input id="hora" class="block mt-1 w-full" type="time" name="hora" :value="$cita->hora" required autofocus />
-                <x-input-error :messages="$errors->get('hora')" class="mt-2" />
+                <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="hora">Hora</label>
+                <select id="hora" name="hora" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" x-model="event_time" required autofocus>
+                    <option value="" disabled selected>Selecciona una hora</option>
+                    @for ($i = 8; $i <= 14; $i++)
+                        @php
+                            $hour = str_pad($i, 2, '0', STR_PAD_LEFT);
+                            $time1 = $hour . ':00';
+                            $time2 = $hour . ':30';
+                        @endphp
+                        <option value="{{ $time1 }}">{{ $time1 }}</option>
+                        @if($i < 16)
+                            <option value="{{ $time2 }}">{{ $time2 }}</option>
+                        @endif
+                    @endfor
+                </select>
+                @error('hora')
+                    <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
+                @enderror
             </div>
 
             <!-- Paciente -->
@@ -31,16 +46,11 @@
                 <x-input-error :messages="$errors->get('pacienteid')" class="mt-2" />
             </div>
 
-            <!-- Usuario Médico -->
+            <!-- Usuario Médico (Oculto) -->
             <div class="mt-4">
                 <x-input-label for="usuariomedicoid" :value="__('Usuario Médico')" />
-                <select id="usuariomedicoid" name="usuariomedicoid" class="block mt-1 w-full" required>
-                    @foreach($usuarios as $usuario)
-                        <option value="{{ $usuario->id }}" {{ $cita->usuariomedicoid == $usuario->id ? 'selected' : '' }}>
-                            {{ $usuario->nombres }} {{ $usuario->apepat }}
-                        </option>
-                    @endforeach
-                </select>
+                <x-text-input id="usuariomedicoid" class="block mt-1 w-full" type="hidden" name="usuariomedicoid" :value="$usuario->id" required />
+                <x-text-input id="usuariomedicoid-display" class="block mt-1 w-full" type="text" :value="$usuario->nombres . ' ' . $usuario->apepat" readonly disabled />
                 <x-input-error :messages="$errors->get('usuariomedicoid')" class="mt-2" />
             </div>
 

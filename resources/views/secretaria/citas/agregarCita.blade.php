@@ -48,18 +48,9 @@
                     <x-input-error :messages="$errors->get('pacienteid')" class="mt-2" />
                 </div>  
 
-                <!-- Usuario Médico -->
-                <div class="mt-4">
-                    <x-input-label for="usuariomedicoid" :value="__('Usuario Médico')" />
-                    <select id="usuariomedicoid" name="usuariomedicoid" class="block mt-1 w-full" required>
-                        @foreach($usuarios as $usuario)
-                            <option value="{{ $usuario->id }}" {{ old('usuariomedicoid') == $usuario->id ? 'selected' : '' }}>
-                                {{ $usuario->nombres }} {{ $usuario->apepat }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <x-input-error :messages="$errors->get('usuariomedicoid')" class="mt-2" />
-                </div>
+                <!-- Usuario Médico (Oculto) -->
+                <input type="hidden" name="usuariomedicoid" value="{{ $usuario->id }}" />
+
             </div>
 
             <div class="flex items-center justify-end mt-4">
@@ -68,7 +59,5 @@
                 </x-primary-button>
             </div>
         </form>
-
-        <div id="calendar"></div>
     </x-guest-layout>
 </x-app-layout>

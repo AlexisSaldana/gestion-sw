@@ -41,8 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/secretaria/citas/editar/{id}', [SecretariaController::class, 'editarCita'])->name('citas.editar');
     Route::patch('/secretaria/citas/editar/{id}', [SecretariaController::class, 'updateCita'])->name('citas.update');
     Route::delete('/secretaria/citas/eliminar/{id}', [SecretariaController::class, 'eliminarCita'])->name('citas.eliminar');
+    Route::get('/get-events', [SecretariaController::class, 'getEvents']);
 
-    // Rutas de Médicos
+    // Rutas de Usuarios
     Route::get('/secretaria/medicos', [SecretariaController::class, 'mostrarMedicos'])->name('medicos');
     Route::post('/secretaria/medicos/agregarMedico', [SecretariaController::class, 'storeMedicos'])->name('medicos.store');
     Route::get('/secretaria/medicos/agregar', [SecretariaController::class, 'crearMedico'])->name('medicos.agregar');
