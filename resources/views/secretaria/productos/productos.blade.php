@@ -27,7 +27,7 @@
                             <!-- Table body -->
                             <tbody>
                                 @foreach($productos as $producto)
-                                    <tr class="border-b dark:border-neutral-600">
+                                    <tr>
                                         <td class="px-6 py-4">{{ $producto->nombre }}</td>
                                         <td class="px-6 py-4">{{ $producto->precio }}</td>
                                         <td class="px-6 py-4">{{ $producto->activo }}</td>

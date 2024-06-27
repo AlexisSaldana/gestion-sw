@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\SecretariaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CitasController;
+use App\Http\Controllers\PacientesController;
+use App\Http\Controllers\ServiciosController;
+use App\Http\Controllers\ProductosController;
+use App\Http\Controllers\UsuariosController;
 use Illuminate\Support\Facades\Route;
 
 // Ruta de la página de bienvenida
@@ -9,7 +14,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');;
 
-// Agrupación de rutas que requieren autenticación y verificación de email
+// Aqui son las rutas que verifican que hayan iniciado sesion
 Route::middleware(['auth', 'verified'])->group(function () {
     // Rutas del perfil de usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -17,48 +22,48 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Rutas de Pacientes
-    Route::post('/pacientes/agregarPaciente', [SecretariaController::class, 'storePacientes'])->name('registrarPaciente.store');
+    Route::post('/pacientes/agregarPaciente', [PacientesController::class, 'storePacientes'])->name('registrarPaciente.store');
     Route::get('/agregarPaciente', function () {
         return view('secretaria.pacientes.agregarPaciente');
     })->name('agregarPaciente');
-    Route::get('/secretaria/dashboardSecretaria', [SecretariaController::class, 'mostrarPacientes'])->name('dashboardSecretaria');
-    Route::get('/secretaria/pacientes/editar/{id}', [SecretariaController::class, 'editarPaciente'])->name('pacientes.editar');
-    Route::patch('/secretaria/pacientes/editar/{id}', [SecretariaController::class, 'updatePaciente'])->name('pacientes.update');
-    Route::delete('/secretaria/pacientes/eliminar/{id}', [SecretariaController::class, 'eliminarPaciente'])->name('pacientes.eliminar');
+    Route::get('/secretaria/dashboardSecretaria', [PacientesController::class, 'mostrarPacientes'])->name('dashboardSecretaria');
+    Route::get('/secretaria/pacientes/editar/{id}', [PacientesController::class, 'editarPaciente'])->name('pacientes.editar');
+    Route::patch('/secretaria/pacientes/editar/{id}', [PacientesController::class, 'updatePaciente'])->name('pacientes.update');
+    Route::delete('/secretaria/pacientes/eliminar/{id}', [PacientesController::class, 'eliminarPaciente'])->name('pacientes.eliminar');
 
     // Rutas de Productos
-    Route::get('/secretaria/productos/agregar', [SecretariaController::class, 'crearProducto'])->name('productos.agregar');
-    Route::post('/secretaria/productos/agregarProducto', [SecretariaController::class, 'storeProductos'])->name('productos.store');
-    Route::get('/secretaria/productos/editar/{id}', [SecretariaController::class, 'editarProducto'])->name('productos.editar');
-    Route::patch('/secretaria/productos/editar/{id}', [SecretariaController::class, 'updateProducto'])->name('productos.update');
-    Route::delete('/secretaria/productos/eliminar/{id}', [SecretariaController::class, 'eliminarProducto'])->name('productos.eliminar');
-    Route::get('/secretaria/productos', [SecretariaController::class, 'mostrarProductos'])->name('productos');
+    Route::get('/secretaria/productos/agregar', [ProductosController::class, 'crearProducto'])->name('productos.agregar');
+    Route::post('/secretaria/productos/agregarProducto', [ProductosController::class, 'storeProductos'])->name('productos.store');
+    Route::get('/secretaria/productos/editar/{id}', [ProductosController::class, 'editarProducto'])->name('productos.editar');
+    Route::patch('/secretaria/productos/editar/{id}', [ProductosController::class, 'updateProducto'])->name('productos.update');
+    Route::delete('/secretaria/productos/eliminar/{id}', [ProductosController::class, 'eliminarProducto'])->name('productos.eliminar');
+    Route::get('/secretaria/productos', [ProductosController::class, 'mostrarProductos'])->name('productos');
 
     // Rutas de Citas
-    Route::get('/secretaria/citas', [SecretariaController::class, 'mostrarCitas'])->name('citas');
-    Route::post('/secretaria/citas/agregarCita', [SecretariaController::class, 'storeCitas'])->name('citas.store');
-    Route::get('/secretaria/citas/agregar', [SecretariaController::class, 'crearCita'])->name('citas.agregar');
-    Route::get('/secretaria/citas/editar/{id}', [SecretariaController::class, 'editarCita'])->name('citas.editar');
-    Route::patch('/secretaria/citas/editar/{id}', [SecretariaController::class, 'updateCita'])->name('citas.update');
-    Route::delete('/secretaria/citas/eliminar/{id}', [SecretariaController::class, 'eliminarCita'])->name('citas.eliminar');
-    Route::get('/get-events', [SecretariaController::class, 'getEvents']);
+    Route::get('/secretaria/citas', [CitasController::class, 'mostrarCitas'])->name('citas');
+    Route::post('/secretaria/citas/agregarCita', [CitasController::class, 'storeCitas'])->name('citas.store');
+    Route::get('/secretaria/citas/agregar', [CitasController::class, 'crearCita'])->name('citas.agregar');
+    Route::get('/secretaria/citas/editar/{id}', [CitasController::class, 'editarCita'])->name('citas.editar');
+    Route::patch('/secretaria/citas/editar/{id}', [CitasController::class, 'updateCita'])->name('citas.update');
+    Route::delete('/secretaria/citas/eliminar/{id}', [CitasController::class, 'eliminarCita'])->name('citas.eliminar');
+    Route::get('/get-events', [CitasController::class, 'getEvents']);
 
     // Rutas de Usuarios
-    Route::get('/secretaria/medicos', [SecretariaController::class, 'mostrarMedicos'])->name('medicos');
-    Route::post('/secretaria/medicos/agregarMedico', [SecretariaController::class, 'storeMedicos'])->name('medicos.store');
-    Route::get('/secretaria/medicos/agregar', [SecretariaController::class, 'crearMedico'])->name('medicos.agregar');
-    Route::get('/secretaria/medicos/editar/{id}', [SecretariaController::class, 'editarMedico'])->name('medicos.editar');
-    Route::patch('/secretaria/medicos/editar/{id}', [SecretariaController::class, 'updateMedico'])->name('medicos.update');
-    Route::delete('/secretaria/medicos/eliminar/{id}', [SecretariaController::class, 'eliminarMedico'])->name('medicos.eliminar');
+    Route::get('/secretaria/usuarios', [UsuariosController::class, 'mostrarUsuarios'])->name('usuarios');
+    Route::post('/secretaria/usuarios/agregarUsuario', [UsuariosController::class, 'storeUsuarios'])->name('usuarios.store');
+    Route::get('/secretaria/usuarios/agregar', [UsuariosController::class, 'crearUsuario'])->name('usuarios.agregar');
+    Route::get('/secretaria/usuarios/editar/{id}', [UsuariosController::class, 'editarUsuario'])->name('usuarios.editar');
+    Route::patch('/secretaria/usuarios/editar/{id}', [UsuariosController::class, 'updateUsuario'])->name('usuarios.update');
+    Route::delete('/secretaria/usuarios/eliminar/{id}', [UsuariosController::class, 'eliminarUsuario'])->name('usuarios.eliminar');
 
     // Rutas de Servicios
-    Route::get('/secretaria/servicios', [SecretariaController::class, 'mostrarServicios'])->name('servicios');
-    Route::post('/secretaria/servicios/agregarServicio', [SecretariaController::class, 'storeServicios'])->name('servicios.store');
-    Route::get('/secretaria/servicios/agregar', [SecretariaController::class, 'crearServicio'])->name('servicios.agregar');
-    Route::get('/secretaria/servicios/editar/{id}', [SecretariaController::class, 'editarServicio'])->name('servicios.editar');
-    Route::patch('/secretaria/servicios/editar/{id}', [SecretariaController::class, 'updateServicio'])->name('servicios.update');
-    Route::delete('/secretaria/servicios/eliminar/{id}', [SecretariaController::class, 'eliminarServicio'])->name('servicios.eliminar');
+    Route::get('/secretaria/servicios', [ServiciosController::class, 'mostrarServicios'])->name('servicios');
+    Route::post('/secretaria/servicios/agregarServicio', [ServiciosController::class, 'storeServicios'])->name('servicios.store');
+    Route::get('/secretaria/servicios/agregar', [ServiciosController::class, 'crearServicio'])->name('servicios.agregar');
+    Route::get('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'editarServicio'])->name('servicios.editar');
+    Route::patch('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'updateServicio'])->name('servicios.update');
+    Route::delete('/secretaria/servicios/eliminar/{id}', [ServiciosController::class, 'eliminarServicio'])->name('servicios.eliminar');
 });
 
-// Incluir las rutas de autenticación generadas por Laravel Breeze
+// Rutas de autenticación generadas por Laravel Breeze
 require __DIR__.'/auth.php';

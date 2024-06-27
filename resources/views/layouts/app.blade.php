@@ -10,11 +10,31 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
     <style>
-        [x-cloak] {
-            display: none;
+        .calendar-day {
+            position: relative;
+            background-color: white;
+            padding: 12px 3px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calendar-day .day-number {
+            margin-bottom: 8px;
+        }
+
+        .calendar-day .events {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 100px; /* Ajusta este valor según sea necesario */
+        }
+
+        .calendar-day .events div {
+            margin-bottom: 4px;
         }
     </style>
+
     
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

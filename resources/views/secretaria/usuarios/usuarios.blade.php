@@ -13,7 +13,7 @@
                         <!-- Table -->
                         <table class="min-w-full text-center text-sm whitespace-nowrap">
                             <!-- Table head -->
-                            <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800">
+                            <thead class="uppercase tracking-wider border-b-2 bg-neutral-50">
                                 <tr>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">Apellido Paterno</th>
@@ -29,7 +29,7 @@
                             <!-- Table body -->
                             <tbody>
                                 @foreach($usuarios as $usuario)
-                                    <tr class="border-b dark:border-neutral-600">
+                                    <tr>
                                         <td class="px-6 py-4">{{ $usuario->nombres }}</td>
                                         <td class="px-6 py-4">{{ $usuario->apepat }}</td>
                                         <td class="px-6 py-4">{{ $usuario->apemat }}</td>
@@ -43,7 +43,7 @@
                                                 Editar
                                             </button>
                                             <!-- Formulario para eliminar el usuario -->
-                                            <form action="{{ route('medicos.eliminar', $usuario->id) }}" method="POST" class="inline-block">
+                                            <form action="{{ route('usuarios.eliminar', $usuario->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-700 ml-4">Eliminar</button>
@@ -72,7 +72,7 @@
             <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                 <div class="px-4 py-5 sm:p-6">
                     <div class="bg-white dark:bg-neutral-700">
-                        <form method="POST" action="{{ route('medicos.store') }}">
+                        <form method="POST" action="{{ route('usuarios.store') }}">
                             @csrf
 
                             <!-- Nombres -->
@@ -278,7 +278,7 @@
         document.querySelectorAll('.openEditModalButton').forEach(button => {
             button.addEventListener('click', function() {
                 const usuarioId = this.getAttribute('data-id');
-                fetch(`/secretaria/medicos/editar/${usuarioId}`)
+                fetch(`/secretaria/usuarios/editar/${usuarioId}`)
                     .then(response => response.json())
                     .then(data => {
                         document.getElementById('edit_nombres').value = data.nombres;
@@ -288,7 +288,7 @@
                         document.getElementById('edit_telefono').value = data.telefono;
                         document.getElementById('edit_rol').value = data.rol;
                         document.getElementById('edit_email').value = data.email;
-                        document.getElementById('editForm').action = `/secretaria/medicos/editar/${usuarioId}`;
+                        document.getElementById('editForm').action = `/secretaria/usuarios/editar/${usuarioId}`;
                         document.getElementById('editModal').classList.remove('hidden');
                         document.getElementById('overlay').classList.remove('hidden');
                     });

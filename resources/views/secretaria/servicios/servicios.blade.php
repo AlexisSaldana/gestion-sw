@@ -27,7 +27,7 @@
                                 <!-- Table body -->
                                 <tbody>
                                 @foreach($servicios as $servicio)
-                                    <tr class="border-b dark:border-neutral-600">
+                                    <tr>
                                         <td class="px-6 py-4">{{ $servicio->nombre }}</td>
                                         <td class="px-6 py-4">{{ $servicio->precio }}</td>
                                         <td class="px-6 py-4">{{ $servicio->activo }}</td>
