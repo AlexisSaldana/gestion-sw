@@ -34,7 +34,6 @@
             margin-bottom: 4px;
         }
     </style>
-
     
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

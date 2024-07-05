@@ -7,8 +7,11 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        'node_modules/preline/dist/*.js',
     ],
-    darkMode: 'class', // This is our star player for the dark mode!
+
+    darkMode: 'class',
+
     theme: {
         extend: {
             fontFamily: {
@@ -16,5 +19,10 @@ export default {
             },
         },
     },
-    plugins: [forms],
+
+    plugins: [
+        forms,
+        require('preline/plugin'),
+    ],
+
 };

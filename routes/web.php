@@ -32,17 +32,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/secretaria/pacientes/eliminar/{id}', [PacientesController::class, 'eliminarPaciente'])->name('pacientes.eliminar');
 
     // Rutas de Productos
-    Route::get('/secretaria/productos/agregar', [ProductosController::class, 'crearProducto'])->name('productos.agregar');
+    Route::get('/secretaria/productos', [ProductosController::class, 'mostrarProductos'])->name('productos');
     Route::post('/secretaria/productos/agregarProducto', [ProductosController::class, 'storeProductos'])->name('productos.store');
     Route::get('/secretaria/productos/editar/{id}', [ProductosController::class, 'editarProducto'])->name('productos.editar');
     Route::patch('/secretaria/productos/editar/{id}', [ProductosController::class, 'updateProducto'])->name('productos.update');
     Route::delete('/secretaria/productos/eliminar/{id}', [ProductosController::class, 'eliminarProducto'])->name('productos.eliminar');
-    Route::get('/secretaria/productos', [ProductosController::class, 'mostrarProductos'])->name('productos');
-
+    
     // Rutas de Citas
     Route::get('/secretaria/citas', [CitasController::class, 'mostrarCitas'])->name('citas');
     Route::post('/secretaria/citas/agregarCita', [CitasController::class, 'storeCitas'])->name('citas.store');
-    Route::get('/secretaria/citas/agregar', [CitasController::class, 'crearCita'])->name('citas.agregar');
     Route::get('/secretaria/citas/editar/{id}', [CitasController::class, 'editarCita'])->name('citas.editar');
     Route::patch('/secretaria/citas/editar/{id}', [CitasController::class, 'updateCita'])->name('citas.update');
     Route::delete('/secretaria/citas/eliminar/{id}', [CitasController::class, 'eliminarCita'])->name('citas.eliminar');
@@ -63,6 +61,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'editarServicio'])->name('servicios.editar');
     Route::patch('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'updateServicio'])->name('servicios.update');
     Route::delete('/secretaria/servicios/eliminar/{id}', [ServiciosController::class, 'eliminarServicio'])->name('servicios.eliminar');
+
+    
 });
 
 // Rutas de autenticación generadas por Laravel Breeze
