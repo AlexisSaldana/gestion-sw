@@ -1,12 +1,16 @@
 <x-app-layout>
-    <div class="py-12">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+    <div class="m-5">
+        @include('estadistica')
+    </div>
+
+    <div>
+        <div class="max-w-full mx-auto sm:px-5 lg:px-5">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
                         <div class="flex my-4 mx-4 items-center justify-between">
                             <h1 class="text-xl font-bold text-gray-900 uppercase">Lista de Pacientes</h1>
-                            <button id="openAddModalButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button id="openAddModalButton" class="ml-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
                                 {{ __('Agregar Paciente') }}
                             </button>
                         </div>
@@ -19,7 +23,6 @@
                                     <th scope="col" class="px-6 py-4">Apellido Paterno</th>
                                     <th scope="col" class="px-6 py-4">Apellido Materno</th>
                                     <th scope="col" class="px-6 py-4">Fecha de Nacimiento</th>
-                                    <th scope="col" class="px-6 py-4">Activo</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
                             </thead>
@@ -32,7 +35,6 @@
                                         <td class="px-6 py-4">{{ $paciente->apepat }}</td>
                                         <td class="px-6 py-4">{{ $paciente->apemat }}</td>
                                         <td class="px-6 py-4">{{ $paciente->fechanac }}</td>
-                                        <td class="px-6 py-4">{{ $paciente->activo }}</td>
                                         <td class="px-6 py-4">
                                             <!-- Botón para editar el paciente -->
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $paciente->id }}">

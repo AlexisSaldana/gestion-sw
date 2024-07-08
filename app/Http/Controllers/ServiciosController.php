@@ -11,6 +11,7 @@ class ServiciosController extends Controller
     // Muestra todos los servicios activos
     public function mostrarServicios()
     {
+        // Obtiene todos los servicios que están activos
         $servicios = Servicio::where('activo', 'si')->get();
         return view('/secretaria.servicios.servicios', compact('servicios'));
     }
@@ -31,17 +32,12 @@ class ServiciosController extends Controller
         return redirect()->route('servicios')->with('status', 'Servicio registrado correctamente');
     }
 
-    // Muestra el formulario para agregar un nuevo servicio
-    public function crearServicio()
-    {
-        return view('/secretaria.servicios.agregarServicio');
-    }
-
     // Muestra el formulario de edición de un servicio específico
     public function editarServicio($id)
     {
+        // Encuentra el servicio por su ID
         $servicio = Servicio::findOrFail($id);
-        return view('/secretaria.servicios.editarServicio', compact('servicio'));
+        return response()->json($servicio);
     }
 
     // Actualiza la información de un servicio específico
@@ -64,10 +60,11 @@ class ServiciosController extends Controller
     // Marca a un servicio como inactivo (eliminado)
     public function eliminarServicio($id)
     {
+        // Encuentra el servicio por su ID y marca como inactivo
         $servicio = Servicio::findOrFail($id);
         $servicio->update(['activo' => 'no']);
 
-        // Redirecciona a la vista de servicios
+        // Redirecciona a la vista de servicios con un mensaje de éxito
         return redirect()->route('servicios')->with('status', 'Servicio eliminado correctamente');
     }
 }

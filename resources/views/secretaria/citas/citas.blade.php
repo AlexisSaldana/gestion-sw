@@ -16,7 +16,6 @@
                                     <th scope="col" class="px-6 py-4">Paciente</th>
                                     <th scope="col" class="px-6 py-4">Fecha</th>
                                     <th scope="col" class="px-6 py-4">Hora</th>
-                                    <th scope="col" class="px-6 py-4">Activo</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
                             </thead>
@@ -29,7 +28,6 @@
                                         <td class="px-6 py-4">{{ $cita->paciente->nombres }} {{ $cita->paciente->apepat }} {{ $cita->paciente->apemat }}</td>
                                         <td class="px-6 py-4">{{ $cita->fecha }}</td>
                                         <td class="px-6 py-4">{{ $cita->hora }}</td>
-                                        <td class="px-6 py-4">{{ $cita->activo ? 'Sí' : 'No' }}</td>
                                         <td class="px-6 py-4">
                                             <!-- Botón para editar la cita -->
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $cita->id }}">
@@ -131,29 +129,26 @@
             <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
                 <div class="px-4 py-5 sm:p-6">
                     <div class="bg-white dark:bg-neutral-700">
-                        <form id="editForm" method="POST" action="">
+                        <form id="editForm" method="POST">
                             @csrf
                             @method('PATCH')
                             <input type="hidden" id="editFormId" name="id" value="">
                             <div class="grid grid-cols-2 gap-4">
-                                <!-- Fecha -->
                                 <div class="mt-4">
                                     <x-input-label for="edit_fecha" :value="__('Fecha')" />
                                     <x-text-input id="edit_fecha" class="block mt-1 w-full" type="date" name="fecha" required />
                                     <x-input-error :messages="$errors->get('fecha')" class="mt-2" />
                                 </div>
-
-                                <!-- Hora -->
                                 <div class="mt-4">
-                                    <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="hora">Hora</label>
-                                    <select id="hora" name="hora" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required autofocus>
+                                    <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_hora">Hora</label>
+                                    <select id="edit_hora" name="hora" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required autofocus>
                                         <option value="" disabled selected>Selecciona una hora</option>
                                         @for ($i = 8; $i <= 13; $i++)
-                                        @php
-                                        $hour = str_pad($i, 2, '0', STR_PAD_LEFT);
-                                        $time = $hour . ':00';
-                                        @endphp
-                                        <option value="{{ $time }}">{{ $time }}</option>
+                                            @php
+                                            $hour = str_pad($i, 2, '0', STR_PAD_LEFT);
+                                            $time = $hour . ':00';
+                                            @endphp
+                                            <option value="{{ $time }}">{{ $time }}</option>
                                         @endfor
                                     </select>
                                     @error('hora')
@@ -161,13 +156,8 @@
                                     @enderror
                                 </div>
                             </div>
-
-                            <!-- Paciente -->
                             <input type="hidden" id="edit_paciente_id" name="paciente_id" />
-
-                            <!-- Médico -->
                             <input type="hidden" name="usuariomedicoid" value="{{ $usuario->id }}" />
-
                             <div class="flex items-center justify-end mt-4">
                                 <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
                                     {{ __('Actualizar Cita') }}
@@ -185,8 +175,9 @@
         </div>
     </div>
 
+
     <!-- Calendar -->
-    <div class="lg:flex lg:h-full lg:flex-col">
+    <div class="m-6 bg-white lg:flex lg:h-full lg:flex-col">
         <header class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">
             <h1 class="text-base font-semibold leading-6 text-gray-900" id="calendar-month-year"></h1>
             <div class="flex items-center">
@@ -310,7 +301,7 @@
             const fechaInput = document.getElementById('fecha');
             const horaSelect = document.getElementById('hora');
             const pacienteSelect = document.getElementById('pacienteid');
-
+            
             let citas = []; // Inicializa el array de citas
             let currentDate = new Date();
 

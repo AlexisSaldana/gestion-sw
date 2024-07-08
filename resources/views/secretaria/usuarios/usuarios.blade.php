@@ -6,7 +6,7 @@
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
                         <div class="flex my-4 mx-4 items-center justify-between">
                             <h1 class="text-xl font-bold text-gray-900 uppercase">Lista de Usuarios</h1>
-                            <button id="openAddModalButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button id="openAddModalButton" class="ml-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
                                 {{ __('Agregar Usuario') }}
                             </button>
                         </div>
@@ -21,7 +21,6 @@
                                     <th scope="col" class="px-6 py-4">Correo</th>
                                     <th scope="col" class="px-6 py-4">Telefono</th>
                                     <th scope="col" class="px-6 py-4">Rol</th>
-                                    <th scope="col" class="px-6 py-4">Activo</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
                             </thead>
@@ -36,7 +35,6 @@
                                         <td class="px-6 py-4">{{ $usuario->email }}</td>
                                         <td class="px-6 py-4">{{ $usuario->telefono }}</td>
                                         <td class="px-6 py-4">{{ $usuario->rol }}</td>
-                                        <td class="px-6 py-4">{{ $usuario->activo }}</td>
                                         <td class="px-6 py-4">
                                             <!-- Botón para editar el usuario -->
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $usuario->id }}">

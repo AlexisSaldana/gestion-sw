@@ -6,7 +6,7 @@
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
                         <div class="flex my-4 mx-4 items-center justify-between">
                             <h1 class="text-xl font-bold text-gray-900 uppercase">Lista de Productos</h1>
-                            <button id="openAddModalButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            <button id="openAddModalButton" class="ml-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
                                 {{ __('Agregar Producto') }}
                             </button>
                         </div>
@@ -17,7 +17,6 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">Precio</th>
-                                    <th scope="col" class="px-6 py-4">Activo</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
                             </thead>
@@ -28,7 +27,6 @@
                                     <tr>
                                         <td class="px-6 py-4">{{ $producto->nombre }}</td>
                                         <td class="px-6 py-4">{{ $producto->precio }}</td>
-                                        <td class="px-6 py-4">{{ $producto->activo }}</td>
                                         <td class="px-6 py-4">
                                             <!-- Botón para editar el producto -->
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $producto->id }}">
