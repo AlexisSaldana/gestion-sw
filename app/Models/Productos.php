@@ -9,11 +9,15 @@ class Productos extends Model
 {
     use HasFactory;
 
-    // Los campos aqui se asignan
-
     protected $fillable = [
         'nombre',
         'precio',
+        'cantidad',
         'activo',
     ];
+
+    public function consultas()
+    {
+        return $this->belongsToMany(Consultas::class, 'consulta_producto');
+    }
 }

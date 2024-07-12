@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12">
+    <div class="pt-5">
         <div class="max-w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
@@ -33,6 +33,7 @@
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $cita->id }}">
                                                 Editar
                                             </button>
+
                                             <!-- Formulario para eliminar la cita -->
                                             <form action="{{ route('citas.eliminar', $cita->id) }}" method="POST" class="inline-block">
                                                 @csrf
@@ -174,7 +175,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Calendar -->
     <div class="m-6 bg-white lg:flex lg:h-full lg:flex-col">

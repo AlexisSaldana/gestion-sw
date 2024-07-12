@@ -24,5 +24,4 @@ export default {
         forms,
         require('preline/plugin'),
     ],
-
 };

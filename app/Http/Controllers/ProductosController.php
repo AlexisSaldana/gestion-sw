@@ -10,7 +10,7 @@ class ProductosController extends Controller
     public function mostrarProductos()
     {
         $productos = Productos::where('activo', 'si')->get();
-        return view('/secretaria.productos.productos', compact('productos'));
+        return view('secretaria.productos.productos', compact('productos'));
     }
 
     public function storeProductos(Request $request)
@@ -18,6 +18,7 @@ class ProductosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
+            'cantidad' => 'required|numeric|min:0',
         ]);
 
         Productos::create($request->all());
@@ -36,6 +37,7 @@ class ProductosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
+            'cantidad' => 'required|numeric|min:0',
         ]);
 
         $producto = Productos::findOrFail($id);

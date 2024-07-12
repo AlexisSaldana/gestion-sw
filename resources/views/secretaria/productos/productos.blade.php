@@ -17,6 +17,7 @@
                                 <tr>
                                     <th scope="col" class="px-6 py-4">Nombre</th>
                                     <th scope="col" class="px-6 py-4">Precio</th>
+                                    <th scope="col" class="px-6 py-4">Cantidad</th>
                                     <th scope="col" class="px-6 py-4">Acciones</th>
                                 </tr>
                             </thead>
@@ -27,6 +28,7 @@
                                     <tr>
                                         <td class="px-6 py-4">{{ $producto->nombre }}</td>
                                         <td class="px-6 py-4">{{ $producto->precio }}</td>
+                                        <td class="px-6 py-4">{{ $producto->cantidad }}</td>
                                         <td class="px-6 py-4">
                                             <!-- Botón para editar el producto -->
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $producto->id }}">
@@ -75,8 +77,15 @@
                             <!-- Precio -->
                             <div class="mt-4">
                                 <x-input-label for="precio" :value="__('Precio')" />
-                                <x-text-input id="precio" class="block mt-1 w-full" type="number" name="precio" :value="old('precio')" required />
+                                <x-text-input id="precio" class="block mt-1 w-full" type="number" step="0.01" name="precio" :value="old('precio')" required />
                                 <x-input-error :messages="$errors->get('precio')" class="mt-2" />
+                            </div>
+
+                            <!-- Cantidad -->
+                            <div class="mt-4">
+                                <x-input-label for="cantidad" :value="__('Cantidad')" />
+                                <x-text-input id="cantidad" class="block mt-1 w-full" type="number" name="cantidad" :value="old('cantidad')" required />
+                                <x-input-error :messages="$errors->get('cantidad')" class="mt-2" />
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
@@ -116,8 +125,25 @@
                             <!-- Precio -->
                             <div class="mt-4">
                                 <x-input-label for="edit_precio" :value="__('Precio')" />
-                                <x-text-input id="edit_precio" class="block mt-1 w-full" type="number" name="precio" required />
+                                <x-text-input id="edit_precio" class="block mt-1 w-full" type="number" step="0.01" name="precio" required />
                                 <x-input-error :messages="$errors->get('precio')" class="mt-2" />
+                            </div>
+
+                            <!-- Cantidad -->
+                            <div class="mt-4">
+                                <x-input-label for="edit_cantidad" :value="__('Cantidad')" />
+                                <x-text-input id="edit_cantidad" class="block mt-1 w-full" type="number" name="cantidad" required />
+                                <x-input-error :messages="$errors->get('cantidad')" class="mt-2" />
+                            </div>
+
+                            <!-- Activo -->
+                            <div class="mt-4">
+                                <x-input-label for="edit_activo" :value="__('Activo')" />
+                                <select id="edit_activo" name="activo" class="block mt-1 w-full" required>
+                                    <option value="si">Si</option>
+                                    <option value="no">No</option>
+                                </select>
+                                <x-input-error :messages="$errors->get('activo')" class="mt-2" />
                             </div>
 
                             <div class="flex items-center justify-end mt-4">
@@ -163,6 +189,8 @@
                     .then(data => {
                         document.getElementById('edit_nombre').value = data.nombre;
                         document.getElementById('edit_precio').value = data.precio;
+                        document.getElementById('edit_cantidad').value = data.cantidad;
+                        document.getElementById('edit_activo').value = data.activo;
                         document.getElementById('editForm').action = `/secretaria/productos/editar/${productoId}`;
                         document.getElementById('editModal').classList.remove('hidden');
                         document.getElementById('overlay').classList.remove('hidden');

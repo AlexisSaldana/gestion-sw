@@ -23,6 +23,7 @@ class ServiciosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
+            'activo', ['si', 'no'],
         ]);
 
         // Creación del servicio
@@ -47,6 +48,7 @@ class ServiciosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
+            'activo', ['si', 'no'],
         ]);
 
         // Encuentra el servicio y actualiza sus datos

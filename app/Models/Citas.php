@@ -31,4 +31,10 @@ class Citas extends Model
     {
         return $this->belongsTo(User::class, 'usuariomedicoid');
     }
+    
+    // Definir la relación con el modelo Consultas
+    public function consulta()
+    {
+        return $this->hasOne(Consultas::class, 'cita_id');
+    }
 }

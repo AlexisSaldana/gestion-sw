@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\SecretariaController;
+use App\Http\Controllers\ConsultasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\PacientesController;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 // Ruta de la página de bienvenida
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');;
+})->name('welcome');
 
 // Aqui son las rutas que verifican que hayan iniciado sesion
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -61,8 +61,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'editarServicio'])->name('servicios.editar');
     Route::patch('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'updateServicio'])->name('servicios.update');
     Route::delete('/secretaria/servicios/eliminar/{id}', [ServiciosController::class, 'eliminarServicio'])->name('servicios.eliminar');
-
     
+    // Rutas de Consultas
+    Route::get('/consultas', [ConsultasController::class, 'index'])->name('consultas.index');
+    Route::get('/consultas/crear/{citaId}', [ConsultasController::class, 'create'])->name('consultas.create');
+    Route::post('/consultas/guardar/{citaId}', [ConsultasController::class, 'store'])->name('consultas.store');
+    Route::get('/consultas/editar/{id}', [ConsultasController::class, 'edit'])->name('consultas.edit');  // Agregar esta línea
+    Route::patch('consultas/{id}', [ConsultasController::class, 'update'])->name('consultas.update');
 });
 
 // Rutas de autenticación generadas por Laravel Breeze

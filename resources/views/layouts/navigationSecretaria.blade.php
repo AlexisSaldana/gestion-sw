@@ -1,4 +1,4 @@
-<div class="relative flex flex-col h-auto w-60 bg-white text-gray-700 shadow-xl">
+<div class="relative flex flex-col h-auto w-60 bg-white text-gray-700 shadow-xl m-5 rounded-xl border-red-500">
     <div class="p-4 mb-2 flex items-center">
         <img src="{{URL::asset('img/logo.png')}}" class=" w-16 rounded">
         <h5 class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-cyan-500">
@@ -37,6 +37,17 @@
                 </svg>
             </div>
             Citas
+        </a>
+
+        <a href="{{ route('consultas.index') }}" role="button"
+           class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
+           {{ request()->routeIs('consultas.index') ? 'bg-blue-gray-50 text-cyan-500' : 'text-blue-gray-700' }}">
+            <div class="grid mr-4 place-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+            </svg>
+            </div>
+            Consultas
         </a>
 
         <a href="{{ route('servicios') }}" role="button" class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
