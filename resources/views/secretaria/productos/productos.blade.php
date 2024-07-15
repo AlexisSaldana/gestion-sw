@@ -136,16 +136,6 @@
                                 <x-input-error :messages="$errors->get('cantidad')" class="mt-2" />
                             </div>
 
-                            <!-- Activo -->
-                            <div class="mt-4">
-                                <x-input-label for="edit_activo" :value="__('Activo')" />
-                                <select id="edit_activo" name="activo" class="block mt-1 w-full" required>
-                                    <option value="si">Si</option>
-                                    <option value="no">No</option>
-                                </select>
-                                <x-input-error :messages="$errors->get('activo')" class="mt-2" />
-                            </div>
-
                             <div class="flex items-center justify-end mt-4">
                                 <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
                                     {{ __('Actualizar Producto') }}
@@ -190,7 +180,6 @@
                         document.getElementById('edit_nombre').value = data.nombre;
                         document.getElementById('edit_precio').value = data.precio;
                         document.getElementById('edit_cantidad').value = data.cantidad;
-                        document.getElementById('edit_activo').value = data.activo;
                         document.getElementById('editForm').action = `/secretaria/productos/editar/${productoId}`;
                         document.getElementById('editModal').classList.remove('hidden');
                         document.getElementById('overlay').classList.remove('hidden');

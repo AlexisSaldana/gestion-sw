@@ -7,7 +7,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
           </svg>
         </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-300">Pacientes Activos</p>
+        <p class="ml-16 truncate text-sm font-medium text-gray-300">Pacientes</p>
       </dt>
       <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
         <p class="text-2xl font-semibold text-gray-100">{{ $totalPacientesActivos }}</p>
@@ -27,7 +27,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
           </svg>
         </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-300">Citas Activas</p>
+        <p class="ml-16 truncate text-sm font-medium text-gray-300">Citas</p>
       </dt>
       <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
         <p class="text-2xl font-semibold text-gray-100">{{ $totalCitasActivas }}</p>
@@ -48,7 +48,7 @@
         </svg>
 
         </div>
-        <p class="ml-16 truncate text-sm font-medium text-gray-300">Usuarios Activos</p>
+        <p class="ml-16 truncate text-sm font-medium text-gray-300">Usuarios</p>
       </dt>
       <dd class="ml-16 flex items-baseline pb-6 sm:pb-7">
         <p class="text-2xl font-semibold text-gray-100">{{ $totalUsuariosActivos }}</p>

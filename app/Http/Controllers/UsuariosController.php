@@ -13,13 +13,13 @@ class UsuariosController extends Controller
     // Muestra todos los usuarios activos
     public function mostrarUsuarios()
     {
-        $usuarios = User::whereIn('rol', ['medico', 'secretaria','colaborador'])
+        $usuarios = User::whereIn('rol', ['medico', 'secretaria','enfermera'])
                         ->where('activo', 'si')
                         ->get();
         $totalPacientesActivos = Paciente::where('activo', 'si')->count(); // Contar pacientes activos
         $totalCitasActivas = Citas::where('activo', 'si')->count(); // Contar citas activas
         $totalUsuariosActivos = User::where('activo', 'si')
-                                     ->whereIn('rol', ['medico', 'secretaria','colaborador'])
+                                     ->whereIn('rol', ['medico', 'secretaria','enfermera'])
                                      ->count(); // Contar usuarios activos con roles de médico y secretaria
         
         return view('/secretaria.usuarios.usuarios', compact('usuarios', 'totalPacientesActivos', 'totalCitasActivas', 'totalUsuariosActivos'));
@@ -37,7 +37,7 @@ class UsuariosController extends Controller
             'apemat' => 'required|string|max:255',
             'fechanac' => 'required|date',
             'telefono' => 'required|string|max:20',
-            'rol' => ['required', 'in:medico,secretaria,colaborador,admin'],
+            'rol' => ['required', 'in:medico,secretaria,enfermera,admin'],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
@@ -81,7 +81,7 @@ class UsuariosController extends Controller
             'apemat' => 'required|string|max:255',
             'fechanac' => 'required|date',
             'telefono' => 'required|string|max:20',
-            'rol' => ['required', 'in:medico,secretaria,colaborador,admin'],
+            'rol' => ['required', 'in:medico,secretaria,enfermera,admin'],
             'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'password' => 'required|string|min:8|confirmed',
         ]);

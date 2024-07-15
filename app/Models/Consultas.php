@@ -10,12 +10,19 @@ class Consultas extends Model
     use HasFactory;
 
     protected $fillable = [
-        'diagnostico',
-        'receta',
         'total_pagar',
         'cita_id',
         'usuariomedicoid',
-        'estado'
+        'estado',
+        'motivo',
+        'talla',
+        'temperatura',
+        'saturacion_oxigeno',
+        'frecuencia_cardiaca',
+        'peso',
+        'tension_arterial',
+        'padecimiento',
+        'enfermera_id',
     ];
 
     public function cita()
@@ -28,9 +35,15 @@ class Consultas extends Model
         return $this->belongsTo(User::class, 'usuariomedicoid');
     }
 
+    public function enfermera()
+    {
+        return $this->belongsTo(User::class, 'enfermera_id');
+    }
+
     public function productos()
     {
-        return $this->belongsToMany(Productos::class, 'consulta_producto', 'consulta_id', 'producto_id')->withPivot('cantidad');
+        return $this->belongsToMany(Productos::class, 'consulta_producto', 'consulta_id', 'producto_id')
+                    ->withPivot('cantidad');
     }
 
     public function servicios()

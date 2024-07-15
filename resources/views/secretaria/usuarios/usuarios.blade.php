@@ -115,7 +115,7 @@
                                     <select id="rol" name="rol" class="block mt-1 w-full" required>
                                         <option value="medico" {{ old('rol') == 'medico' ? 'selected' : '' }}>Médico</option>
                                         <option value="secretaria" {{ old('rol') == 'secretaria' ? 'selected' : '' }}>Secretaria</option>
-                                        <option value="colaborador" {{ old('rol') == 'colaborador' ? 'selected' : '' }}>Médico Colaborador</option>
+                                        <option value="enfermera" {{ old('rol') == 'enfermera' ? 'selected' : '' }}>Enfermera</option>
                                     </select>
                                     <x-input-error :messages="$errors->get('rol')" class="mt-2" />
                                 </div>
@@ -211,7 +211,7 @@
                                     <select id="edit_rol" name="rol" class="block mt-1 w-full" required>
                                         <option value="medico">Médico</option>
                                         <option value="secretaria">Secretaria</option>
-                                        <option value="colaborador">Médico Colaborador</option>
+                                        <option value="enfermera">Enfermera</option>
                                     </select>
                                     <x-input-error :messages="$errors->get('rol')" class="mt-2" />
                                 </div>

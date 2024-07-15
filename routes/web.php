@@ -66,7 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/consultas', [ConsultasController::class, 'index'])->name('consultas.index');
     Route::get('/consultas/crear/{citaId}', [ConsultasController::class, 'create'])->name('consultas.create');
     Route::post('/consultas/guardar/{citaId}', [ConsultasController::class, 'store'])->name('consultas.store');
-    Route::get('/consultas/editar/{id}', [ConsultasController::class, 'edit'])->name('consultas.edit');  // Agregar esta línea
+    Route::get('/consultas/editar/{id}', [ConsultasController::class, 'edit'])->name('consultas.edit'); 
     Route::patch('consultas/{id}', [ConsultasController::class, 'update'])->name('consultas.update');
 });
 

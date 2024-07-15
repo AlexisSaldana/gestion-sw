@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('apemat', 100); // Columna apellido materno con un máximo de 100 caracteres
             $table->date('fechanac'); // Columna fecha de nacimiento
             $table->string('telefono', 20); // Columna teléfono con un máximo de 20 caracteres
-            $table->enum('rol', ['medico', 'secretaria', 'colaborador','admin']); // Columna rol con valores permitidos 'medico', 'secretaria', 'colaborador'
+            $table->enum('rol', ['medico', 'secretaria', 'enfermera','admin']); // Columna rol con valores permitidos 'medico', 'secretaria', 'enfermera'
             $table->enum('activo', ['si', 'no'])->default('si'); // Columna activo con valores 'si' y 'no', por defecto 'si'
             $table->string('email')->unique(); // Columna email única
             $table->string('password'); // Columna contraseña

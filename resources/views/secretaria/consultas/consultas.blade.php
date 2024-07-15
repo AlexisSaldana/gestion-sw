@@ -31,7 +31,7 @@
                                     <td class="px-6 py-4">{{ $cita->hora }}</td>
                                     <td class="px-6 py-4">
                                         @if($cita->consulta)
-                                            <span class="{{ $cita->consulta->estado == 'Finalizado' ? 'text-red-500 rounded p-1 bg-red-50' : 'text-yellow-500' }}">
+                                            <span class="{{ $cita->consulta->estado == 'Finalizado' ? 'text-red-500 rounded p-1 bg-red-50' : 'text-yellow-500 rounded p-1 bg-yellow-50' }}">
                                                 {{ $cita->consulta->estado }}
                                             </span>
                                         @else
