@@ -21,11 +21,12 @@ class ConsultasController extends Controller
     // Mostrar el formulario para crear una nueva consulta
     public function create($citaId)
     {
+        $consulta = Consultas::where('cita_id', $citaId)->first(); // Asumiendo que existe una relación así
         $cita = Citas::with('paciente')->findOrFail($citaId);
         $productos = Productos::where('activo', 'si')->get();
         $servicios = Servicio::where('activo', 'si')->get();
         $enfermeras = User::where('rol', 'enfermera')->where('activo', 'si')->get();
-        return view('secretaria.consultas.crearConsulta', compact('cita', 'productos', 'servicios', 'enfermeras'));
+        return view('secretaria.consultas.crearConsulta', compact('cita', 'productos', 'servicios', 'enfermeras', 'consulta'));
     }
 
     public function store(Request $request, $citaId)

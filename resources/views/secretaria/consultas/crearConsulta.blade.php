@@ -59,11 +59,12 @@
                     <select id="enfermera_id" name="enfermera_id" class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md">
                         <option value="">Seleccione una enfermera</option>
                         @foreach($enfermeras as $enfermera)
-                            <option value="{{ $enfermera->id }}" {{ $consulta->enfermera_id == $enfermera->id ? 'selected' : '' }}>
+                            <option value="{{ $enfermera->id }}" {{ isset($enfermera_id) && $enfermera_id == $enfermera->id ? 'selected' : '' }}>
                                 {{ $enfermera->nombres . ' ' . $enfermera->apepat . ' (' . $enfermera->email . ')'}}
                             </option>                        
-                        @endforeach
+                        @endforeach 
                     </select>
+
                 </div>
 
                 <div class="mb-8">
