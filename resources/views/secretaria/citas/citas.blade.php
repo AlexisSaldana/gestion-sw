@@ -58,72 +58,6 @@
     <!-- Background Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden"></div>
 
-    <!-- Add Modal -->
-    <div id="addModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen px-4">
-            <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="bg-white dark:bg-neutral-700">
-                    <form method="POST" action="{{ route('citas.store') }}">
-                        @csrf
-                        <div class="grid grid-cols-2 gap-4">
-                            <!-- Fecha -->
-                            <div class="mt-4">
-                                <x-input-label for="fecha" :value="__('Fecha')" />
-                                <x-text-input id="fecha" class="block mt-1 w-full" type="date" name="fecha" :value="old('fecha')" required autofocus />
-                                <x-input-error :messages="$errors->get('fecha')" class="mt-2" />
-                            </div>
-
-                            <!-- Hora -->
-                            <div class="mt-4">
-                                <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="hora">Hora</label>
-                                <select id="hora" name="hora" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required autofocus>
-                                    <option value="" disabled selected>Selecciona una hora</option>
-                                    @for ($i = 8; $i <= 13; $i++)
-                                    @php
-                                    $hour = str_pad($i, 2, '0', STR_PAD_LEFT);
-                                    $time = $hour . ':00';
-                                    @endphp
-                                    <option value="{{ $time }}">{{ $time }}</option>
-                                    @endfor
-                                </select>
-                                @error('hora')
-                                <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <!-- Paciente -->
-                        <div class="mt-4">
-                            <x-input-label for="paciente_id" :value="__('Paciente')" />
-                            <select id="paciente_id" name="paciente_id" class="block mt-1 w-full" required>
-                                @foreach($pacientes as $paciente)
-                                    <option value="{{ $paciente->id }}">{{ $paciente->nombres }} {{ $paciente->apepat }} {{ $paciente->apemat }}</option>
-                                @endforeach
-                            </select>
-                            <x-input-error :messages="$errors->get('paciente_id')" class="mt-2" />
-                        </div>
-
-                        <!-- Médico -->
-                        <input type="hidden" name="usuariomedicoid" value="{{ $usuario->id }}" />
-
-                        <div class="flex items-center justify-end mt-4">
-                            <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
-                                {{ __('Registrar Cita') }}
-                            </button>
-                        </div>
-                    </form>
-                    </div>
-                </div>
-                <div class="bg-gray-100 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm mr-2" id="closeAddModalButton">
-                        {{ __('Cerrar') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Edit Modal -->
     <div id="editModal" class="fixed z-50 inset-0 overflow-y-auto hidden">
         <div class="flex items-center justify-center min-h-screen px-4">
@@ -284,6 +218,31 @@
         </div>
     </div>
 
+    <style>
+        .calendar-day {
+            position: relative;
+            background-color: white;
+            padding: 12px 3px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .calendar-day .day-number {
+            margin-bottom: 8px;
+        }
+
+        .calendar-day .events {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 100px; /* Ajusta este valor según sea necesario */
+        }
+
+        .calendar-day .events div {
+            margin-bottom: 4px;
+        }
+    </style>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const monthYearElement = document.getElementById('calendar-month-year');
@@ -339,9 +298,11 @@
                     const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                     const citasForDay = citas.filter(cita => cita.event_date === dateString);
-                    const dayCell = `<div class="relative bg-white px-3 py-12 ${isToday ? 'font-semibold text-white' : ''}">
-                                      <time datetime="${dateString}" class="${isToday ? 'rounded-full bg-blue-500 p-1' : ''}">${day}</time>
-                                      ${citasForDay.map(cita => `<div class="mt-1 text-sm text-blue-500">${cita.event_title} ${cita.event_time}</div>`).join('')}
+                    const dayCell = `<div class="relative calendar-day ${isToday ? 'font-semibold text-white' : ''}">
+                                      <time datetime="${dateString}" class="day-number ${isToday ? 'rounded-full bg-blue-500 p-1' : ''}">${day}</time>
+                                      <div class="events">
+                                        ${citasForDay.map(cita => `<div class="mt-1 text-sm text-blue-500" draggable="true" ondragstart="onDragStart(event)" data-id="${cita.id}">${cita.event_title} ${cita.event_time}</div>`).join('')}
+                                      </div>
                                    </div>`;
                     calendarDaysElement.innerHTML += dayCell;
                     calendarDaysMobileElement.innerHTML += dayCell;
@@ -351,6 +312,30 @@
             function changeMonth(offset) {
                 currentDate.setMonth(currentDate.getMonth() + offset);
                 renderCalendar(currentDate);
+            }
+
+            function onDragStart(event) {
+                event.dataTransfer.setData('text/plain', event.target.dataset.id);
+            }
+
+            function onDrop(event) {
+                event.preventDefault();
+                const citaId = event.dataTransfer.getData('text/plain');
+                const dropDate = event.target.closest('.calendar-day').querySelector('.day-number').getAttribute('datetime');
+
+                fetch(`/secretaria/citas/mover/${citaId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    },
+                    body: JSON.stringify({ fecha: dropDate }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    fetchEvents();
+                })
+                .catch(error => console.error('Error:', error));
             }
 
             prevMonthButton.addEventListener('click', () => changeMonth(-1));
@@ -398,6 +383,12 @@
             document.getElementById('closeEditModalButton').addEventListener('click', () => {
                 document.getElementById('editModal').classList.add('hidden');
                 document.getElementById('overlay').classList.add('hidden');
+            });
+
+            // Allow drop on calendar days
+            document.querySelectorAll('.calendar-day').forEach(day => {
+                day.addEventListener('dragover', event => event.preventDefault());
+                day.addEventListener('drop', onDrop);
             });
 
             // Fetch and render events on initial load

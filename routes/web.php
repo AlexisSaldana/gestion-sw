@@ -45,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/secretaria/citas/editar/{id}', [CitasController::class, 'updateCita'])->name('citas.update');
     Route::delete('/secretaria/citas/eliminar/{id}', [CitasController::class, 'eliminarCita'])->name('citas.eliminar');
     Route::get('/get-events', [CitasController::class, 'getEvents']);
+    Route::patch('/secretaria/citas/mover/{id}', [CitasController::class, 'moverCita']);
 
     // Rutas de Usuarios
     Route::get('/secretaria/usuarios', [UsuariosController::class, 'mostrarUsuarios'])->name('usuarios');
