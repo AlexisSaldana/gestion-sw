@@ -71,7 +71,7 @@
                     <div id="productos-adquiridos-container">
                         @foreach($consulta->productos as $producto)
                             <div class="form-check mb-2">
-                                <label class="form-check-label" for="producto_adquirido_{{ $producto->id }}">{{ $producto->nombre }} - ${{ $producto->precio }} x {{ $producto->pivot->cantidad }}</label>
+                                <label class="form-check-label" data-price="{{ $producto->precio }}" for="producto_adquirido_{{ $producto->id }}">{{ $producto->nombre }} - ${{ $producto->precio }} x {{ $producto->pivot->cantidad }}</label>
                                 <input type="hidden" name="productos_existentes[]" value="{{ $producto->id }}">
                                 <input type="hidden" name="cantidades_existentes[]" value="{{ $producto->pivot->cantidad }}">
                             </div>
@@ -92,7 +92,7 @@
                     <div id="servicios-adquiridos-container">
                         @foreach($consulta->servicios as $servicio)
                             <div class="form-check mb-2">
-                                <label class="form-check-label" for="servicio_adquirido_{{ $servicio->id }}">{{ $servicio->nombre }} - ${{ $servicio->precio }}</label>
+                                <label class="form-check-label" data-price="{{ $servicio->precio }}" for="servicio_adquirido_{{ $servicio->id }}">{{ $servicio->nombre }} - ${{ $servicio->precio }}</label>
                                 <input type="hidden" name="servicios_existentes[]" value="{{ $servicio->id }}">
                             </div>
                         @endforeach
@@ -122,7 +122,7 @@
                     <label for="total_pagar" class="mb-3 block text-base font-medium text-[#07074D]">
                         Total a Pagar
                     </label>
-                    <input type="number" step="0.01" id="total_pagar" name="total_pagar" value="{{ $consulta->total_pagar }}" required class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    <input type="number" step="0.01" id="total_pagar" name="total_pagar" value="{{ $consulta->total_pagar }}" readonly class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                 </div>
 
                 <button class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">Actualizar Consulta</button>
@@ -131,23 +131,56 @@
     </div>
 
     <script>
+        function updateTotal() {
+            let total = 0; // Reinicia el total a cero para calcular nuevamente
+
+            // Sumamos el total de productos existentes
+            document.querySelectorAll('#productos-adquiridos-container .form-check-label').forEach(label => {
+                let cantidad = parseFloat(label.nextElementSibling.nextElementSibling.value);
+                let precio = parseFloat(label.dataset.price);
+                total += precio * cantidad;
+            });
+
+            // Sumamos el total de productos nuevos
+            document.querySelectorAll('select[name="productos[]"]').forEach(item => {
+                let price = parseFloat(item.selectedOptions[0].dataset.price);
+                let quantity = parseFloat(item.closest('.form-group').querySelector('input[name="cantidades_productos[]"]').value);
+                total += price * quantity;
+            });
+
+            // Sumamos el total de servicios existentes
+            document.querySelectorAll('#servicios-adquiridos-container .form-check-label').forEach(label => {
+                let precio = parseFloat(label.dataset.price);
+                total += precio;
+            });
+
+            // Sumamos el total de servicios nuevos
+            document.querySelectorAll('select[name="servicios[]"]').forEach(item => {
+                let price = parseFloat(item.selectedOptions[0].dataset.price);
+                total += price;
+            });
+
+            document.getElementById('total_pagar').value = total.toFixed(2);
+        }
+
         document.getElementById('add-product').addEventListener('click', function() {
             let container = document.getElementById('productos-container');
             let index = container.children.length;
 
             let productSelect = `
                 <div class="form-group mb-2" id="product-${index}">
-                    <select name="productos[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2">
+                    <select name="productos[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" onchange="updateTotal()">
                         @foreach($productos as $producto)
                             <option value="{{ $producto->id }}" data-price="{{ $producto->precio }}">{{ $producto->nombre }} - ${{ $producto->precio }}</option>
                         @endforeach
                     </select>
-                    <input type="number" name="cantidades_productos[]" min="1" value="1" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" placeholder="Cantidad">
+                    <input type="number" name="cantidades_productos[]" min="1" value="1" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" placeholder="Cantidad" onchange="updateTotal()">
                     <button type="button" class="remove-product text-red-500" onclick="removeProduct(${index})">Eliminar</button>
                 </div>
             `;
 
             container.insertAdjacentHTML('beforeend', productSelect);
+            updateTotal();
         });
 
         document.getElementById('add-service').addEventListener('click', function() {
@@ -156,7 +189,7 @@
 
             let serviceSelect = `
                 <div class="form-group mb-2" id="service-${index}">
-                    <select name="servicios[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2">
+                    <select name="servicios[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" onchange="updateTotal()">
                         @foreach($servicios as $servicio)
                             <option value="{{ $servicio->id }}" data-price="{{ $servicio->precio }}">{{ $servicio->nombre }} - ${{ $servicio->precio }}</option>
                         @endforeach
@@ -166,25 +199,25 @@
             `;
 
             container.insertAdjacentHTML('beforeend', serviceSelect);
+            updateTotal();
         });
 
         function removeProduct(index) {
             document.getElementById('product-' + index).remove();
+            updateTotal();
         }
 
         function removeService(index) {
             document.getElementById('service-' + index).remove();
+            updateTotal();
         }
 
         document.addEventListener('change', function() {
-            let total = parseFloat(document.getElementById('total_pagar').value);
-            document.querySelectorAll('select[name="productos[]"]').forEach(item => {
-                total += parseFloat(item.selectedOptions[0].dataset.price) * parseFloat(item.closest('.form-group').querySelector('input[name="cantidades_productos[]"]').value);
-            });
-            document.querySelectorAll('select[name="servicios[]"]').forEach(item => {
-                total += parseFloat(item.selectedOptions[0].dataset.price);
-            });
-            document.getElementById('total_pagar').value = total.toFixed(2);
+            updateTotal();
         });
+
+        window.onload = function() {
+            updateTotal();
+        }
     </script>
 </x-app-layout>

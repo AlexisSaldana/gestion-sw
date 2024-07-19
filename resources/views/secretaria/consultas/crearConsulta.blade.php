@@ -7,6 +7,7 @@
 
                 <!-- Motivo de la Consulta -->
                 <div class="mb-8">
+                    
                     <label for="motivo" class="mb-3 block text-base font-medium text-[#07074D]">
                         Motivo de la Consulta
                     </label>
@@ -17,7 +18,7 @@
                     </label>
 
                     <div class="mb-8 grid grid-cols-3 gap-4">
-                        <div>
+                    <div>
                             <label for="talla" class="block text-base font-medium text-[#07074D]">Talla</label>
                             <input type="text" id="talla" name="talla" placeholder="0 m" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                         </div>
@@ -63,6 +64,7 @@
                             </option>                        
                         @endforeach 
                     </select>
+
                 </div>
 
                 <div class="mb-8">
@@ -105,41 +107,23 @@
     </div>
 
     <script>
-        function updateTotal() {
-            let total = 100; // Precio inicial de la consulta
-
-            document.querySelectorAll('select[name="productos[]"]').forEach(item => {
-                let price = parseFloat(item.selectedOptions[0].dataset.price);
-                let quantity = parseFloat(item.closest('.form-group').querySelector('input[name="cantidades_productos[]"]').value);
-                total += price * quantity;
-            });
-
-            document.querySelectorAll('select[name="servicios[]"]').forEach(item => {
-                let price = parseFloat(item.selectedOptions[0].dataset.price);
-                total += price;
-            });
-
-            document.getElementById('total_pagar').value = total.toFixed(2);
-        }
-
         document.getElementById('add-product').addEventListener('click', function() {
             let container = document.getElementById('productos-container');
             let index = container.children.length;
 
             let productSelect = `
                 <div class="form-group mb-2" id="product-${index}">
-                    <select name="productos[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" onchange="updateTotal()">
+                    <select name="productos[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2">
                         @foreach($productos as $producto)
                             <option value="{{ $producto->id }}" data-price="{{ $producto->precio }}">{{ $producto->nombre }} - ${{ $producto->precio }}</option>
                         @endforeach
                     </select>
-                    <input type="number" name="cantidades_productos[]" min="1" value="1" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" placeholder="Cantidad" onchange="updateTotal()">
+                    <input type="number" name="cantidades_productos[]" min="1" value="1" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" placeholder="Cantidad">
                     <button type="button" class="remove-product text-red-500" onclick="removeProduct(${index})">Eliminar</button>
                 </div>
             `;
 
             container.insertAdjacentHTML('beforeend', productSelect);
-            updateTotal();
         });
 
         document.getElementById('add-service').addEventListener('click', function() {
@@ -148,7 +132,7 @@
 
             let serviceSelect = `
                 <div class="form-group mb-2" id="service-${index}">
-                    <select name="servicios[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2" onchange="updateTotal()">
+                    <select name="servicios[]" class="w-full rounded-md border border-[#e0e0e0] bg-white py-2 px-4 mb-2">
                         @foreach($servicios as $servicio)
                             <option value="{{ $servicio->id }}" data-price="{{ $servicio->precio }}">{{ $servicio->nombre }} - ${{ $servicio->precio }}</option>
                         @endforeach
@@ -158,21 +142,25 @@
             `;
 
             container.insertAdjacentHTML('beforeend', serviceSelect);
-            updateTotal();
         });
 
         function removeProduct(index) {
             document.getElementById('product-' + index).remove();
-            updateTotal();
         }
 
         function removeService(index) {
             document.getElementById('service-' + index).remove();
-            updateTotal();
         }
 
         document.addEventListener('change', function() {
-            updateTotal();
+            let total = 100; // Precio inicial de la consulta
+            document.querySelectorAll('select[name="productos[]"]').forEach(item => {
+                total += parseFloat(item.selectedOptions[0].dataset.price) * parseFloat(item.closest('.form-group').querySelector('input[name="cantidades_productos[]"]').value);
+            });
+            document.querySelectorAll('select[name="servicios[]"]').forEach(item => {
+                total += parseFloat(item.selectedOptions[0].dataset.price);
+            });
+            document.getElementById('total_pagar').value = total.toFixed(2);
         });
     </script>
 </x-app-layout>
