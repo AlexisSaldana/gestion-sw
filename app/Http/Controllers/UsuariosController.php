@@ -11,23 +11,44 @@ use App\Models\Citas;
 class UsuariosController extends Controller
 {
     // Muestra todos los usuarios activos
-    public function mostrarUsuarios()
+    public function mostrarUsuarios(Request $request)
     {
-        $usuarios = User::whereIn('rol', ['medico', 'secretaria','enfermera'])
-                        ->where('activo', 'si')
-                        ->get();
+        $query = User::query();
+
+        // Filtros de búsqueda
+        if ($request->has('busqueda') && $request->busqueda != '') {
+            $terms = explode(' ', $request->busqueda);
+            $query->where(function($q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->orWhere('nombres', 'like', '%' . $term . '%')
+                      ->orWhere('apepat', 'like', '%' . $term . '%')
+                      ->orWhere('apemat', 'like', '%' . $term . '%')
+                      ->orWhere('email', 'like', '%' . $term . '%')
+                      ->orWhere('telefono', 'like', '%' . $term . '%');
+                }
+            });
+        }
+
+        // Filtro por rol
+        if ($request->has('rol') && $request->rol != '') {
+            $query->where('rol', $request->rol);
+        }
+
+        // Obtiene todos los usuarios que están activos y coinciden con la búsqueda
+        $usuarios = $query->whereIn('rol', ['medico', 'secretaria', 'enfermera'])
+                          ->where('activo', 'si')
+                          ->get();
+                          
         $totalPacientesActivos = Paciente::where('activo', 'si')->count(); // Contar pacientes activos
         $totalCitasActivas = Citas::where('activo', 'si')->count(); // Contar citas activas
         $totalUsuariosActivos = User::where('activo', 'si')
-                                     ->whereIn('rol', ['medico', 'secretaria','enfermera'])
+                                     ->whereIn('rol', ['medico', 'secretaria', 'enfermera'])
                                      ->count(); // Contar usuarios activos con roles de médico y secretaria
         
-        return view('/secretaria.usuarios.usuarios', compact('usuarios', 'totalPacientesActivos', 'totalCitasActivas', 'totalUsuariosActivos'));
+        return view('secretaria.usuarios.usuarios', compact('usuarios', 'totalPacientesActivos', 'totalCitasActivas', 'totalUsuariosActivos'));
     }
-    
-    
 
-    // Guarda un nuevo médico
+    // Guarda un nuevo usuario
     public function storeUsuarios(Request $request)
     {
         // Validación de los datos recibidos
@@ -61,7 +82,7 @@ class UsuariosController extends Controller
     // Muestra el formulario para agregar un nuevo usuario
     public function crearUsuario()
     {
-        return view('/secretaria.usuarios.agregarUsuario');
+        return view('secretaria.usuarios.agregarUsuario');
     }
 
     // Muestra el formulario de edición de un usuario específico
@@ -83,7 +104,7 @@ class UsuariosController extends Controller
             'telefono' => 'required|string|max:20',
             'rol' => ['required', 'in:medico,secretaria,enfermera,admin'],
             'email' => 'required|string|email|max:255|unique:users,email,'.$id,
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
         ]);
 
         // Encuentra el usuario y actualiza sus datos

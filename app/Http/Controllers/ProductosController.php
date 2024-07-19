@@ -7,9 +7,21 @@ use App\Models\Productos;
 
 class ProductosController extends Controller
 {
-    public function mostrarProductos()
+    public function mostrarProductos(Request $request)
     {
-        $productos = Productos::where('activo', 'si')->get();
+        $query = Productos::query();
+
+        // Filtros de búsqueda
+        if ($request->has('busqueda') && $request->busqueda != '') {
+            $terms = explode(' ', $request->busqueda);
+            $query->where(function($q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->orWhere('nombre', 'like', '%' . $term . '%');
+                }
+            });
+        }
+
+        $productos = $query->where('activo', 'si')->get();
         return view('secretaria.productos.productos', compact('productos'));
     }
 

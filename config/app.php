@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -65,7 +66,7 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => env('APP_TIMEZONE', 'America/Monterrey'),
 
     /*
     |--------------------------------------------------------------------------
@@ -121,6 +122,8 @@ return [
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
+        
     ],
+
 
 ];

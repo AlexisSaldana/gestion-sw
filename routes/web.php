@@ -69,6 +69,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/consultas/guardar/{citaId}', [ConsultasController::class, 'store'])->name('consultas.store');
     Route::get('/consultas/editar/{id}', [ConsultasController::class, 'edit'])->name('consultas.edit'); 
     Route::patch('consultas/{id}', [ConsultasController::class, 'update'])->name('consultas.update');
+    Route::get('/citas/verificar', [CitasController::class, 'verificarCita'])->name('citas.verificar');
+
+    // Rutas del data table
+    Route::get('/buscar-pacientes', [PacientesController::class, 'buscarPacientes'])->name('pacientes.buscar');
+
+    // Rutas del PDF
+    Route::get('/consultas/{id}/download', [ConsultasController::class, 'downloadPDF'])->name('consultas.download');
 });
 
 // Rutas de autenticación generadas por Laravel Breeze

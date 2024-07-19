@@ -8,13 +8,53 @@ use App\Models\Productos;
 use App\Models\Servicio;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Dompdf\Dompdf;
 
 class ConsultasController extends Controller
 {
-    // Mostrar las citas pendientes para tomar una consulta
-    public function index()
+    public function downloadPDF($id)
     {
-        $citas = Citas::where('activo', 'si')->with(['paciente', 'usuarioMedico', 'consulta'])->get();
+        $consulta = Consultas::with(['cita', 'cita.paciente', 'cita.usuarioMedico', 'productos' => function($query) {
+            $query->withPivot('cantidad');
+        }, 'servicios'])->findOrFail($id);
+
+        $html = view('secretaria.consultas.pdf', compact('consulta'))->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('consulta_' . $consulta->id . '.pdf');
+    }
+
+    // Mostrar las citas pendientes para tomar una consulta
+    public function index(Request $request)
+    {
+        $query = Citas::query()->where('activo', 'si')->with(['paciente', 'usuarioMedico', 'consulta']);
+    
+        // Filtros de búsqueda
+        if ($request->has('busqueda') && $request->busqueda != '') {
+            $terms = explode(' ', $request->busqueda);
+            $query->where(function($q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->orWhere('usuariomedicoid', 'like', '%' . $term . '%');
+                    $q->orWhere('pacienteid', 'like', '%' . $term . '%');
+                    $q->orWhere('fecha', 'like', '%' . $term . '%');
+                }
+            });
+        }
+
+        // Filtro por estado
+        if ($request->has('estado') && $request->estado != '') {
+            $estado = $request->estado == 'en proceso' ? 'En proceso' : 'Finalizado'; // Ajusta según tus valores de estado
+            $query->whereHas('consulta', function($q) use ($estado) {
+                $q->where('estado', $estado);
+            });
+        }
+    
+        $citas = $query->get();
+    
         return view('secretaria.consultas.consultas', compact('citas'));
     }
 
@@ -97,7 +137,6 @@ class ConsultasController extends Controller
         return view('secretaria.consultas.editarConsulta', compact('consulta', 'productos', 'servicios', 'enfermeras'));
     }
     
-
     public function update(Request $request, $id)
     {
         $request->validate([

@@ -16,6 +16,7 @@ class Paciente extends Model
         'apepat',
         'apemat',
         'fechanac',
+        'telefono',
         'activo',
     ];
 

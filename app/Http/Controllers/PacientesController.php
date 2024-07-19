@@ -19,6 +19,7 @@ class PacientesController extends Controller
             'apepat' => 'required|string|max:255',
             'apemat' => 'required|string|max:255',
             'fechanac' => 'required|date',
+            'telefono' => 'required|string|max:15',
         ]);
 
         // Creación del paciente
@@ -29,13 +30,28 @@ class PacientesController extends Controller
     }
 
     // Muestra todos los pacientes activos
-    public function mostrarPacientes()
+    public function mostrarPacientes(Request $request)
     {
-        $pacientes = Paciente::where('activo', 'si')->get();
+        $query = Paciente::where('activo', 'si');
+
+        // Filtros de búsqueda
+        if ($request->has('busqueda') && $request->busqueda != '') {
+            $terms = explode(' ', $request->busqueda);
+            $query->where(function($q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->orWhere('nombres', 'like', '%' . $term . '%')
+                      ->orWhere('apepat', 'like', '%' . $term . '%')
+                      ->orWhere('apemat', 'like', '%' . $term . '%')
+                      ->orWhere('telefono', 'like', '%' . $term . '%');
+                }
+            });
+        }
+
+        $pacientes = $query->get();
         $totalPacientesActivos = Paciente::where('activo', 'si')->count(); // Contar pacientes activos
         $totalCitasActivas = Citas::where('activo', 'si')->count(); // Contar citas activas
         $totalUsuariosActivos = User::where('activo', 'si')
-                                     ->whereIn('rol', ['medico', 'secretaria','colaborador'])
+                                     ->whereIn('rol', ['medico', 'secretaria','enfermera'])
                                      ->count(); // Contar usuarios activos con roles de médico y secretaria
         
         return view('/secretaria.dashboardSecretaria', compact('pacientes', 'totalPacientesActivos', 'totalCitasActivas', 'totalUsuariosActivos'));
@@ -57,6 +73,7 @@ class PacientesController extends Controller
             'apepat' => 'required|string|max:255',
             'apemat' => 'required|string|max:255',
             'fechanac' => 'required|date',
+            'telefono' => 'required|string|max:15',
         ]);
 
         // Encuentra el paciente y actualiza sus datos

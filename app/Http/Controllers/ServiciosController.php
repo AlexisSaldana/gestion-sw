@@ -9,11 +9,23 @@ use App\Models\Servicio;
 class ServiciosController extends Controller
 {
     // Muestra todos los servicios activos
-    public function mostrarServicios()
+    public function mostrarServicios(Request $request)
     {
-        // Obtiene todos los servicios que están activos
-        $servicios = Servicio::where('activo', 'si')->get();
-        return view('/secretaria.servicios.servicios', compact('servicios'));
+        $query = Servicio::query();
+
+        // Filtros de búsqueda
+        if ($request->has('busqueda') && $request->busqueda != '') {
+            $terms = explode(' ', $request->busqueda);
+            $query->where(function($q) use ($terms) {
+                foreach ($terms as $term) {
+                    $q->orWhere('nombre', 'like', '%' . $term . '%');
+                }
+            });
+        }
+
+        // Obtiene todos los servicios que están activos y coinciden con la búsqueda
+        $servicios = $query->where('activo', 'si')->get();
+        return view('secretaria.servicios.servicios', compact('servicios'));
     }
 
     // Guarda un nuevo servicio
@@ -23,7 +35,7 @@ class ServiciosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
-            'activo', ['si', 'no'],
+            'activo' => 'required|in:si,no',
         ]);
 
         // Creación del servicio
@@ -48,7 +60,7 @@ class ServiciosController extends Controller
         $request->validate([
             'nombre' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
-            'activo', ['si', 'no'],
+            'activo' => 'required|in:si,no',
         ]);
 
         // Encuentra el servicio y actualiza sus datos

@@ -31,34 +31,74 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Admin123')
         ]);
 
-        // Crear un paciente
-        $paciente = Paciente::create([
-            'nombres' => 'Juan',
-            'apepat' => 'Perez',
-            'apemat' => 'Gomez',
-            'fechanac' => '1990-05-21',
+        User::create([
+            'nombres' => 'enfermera',
+            'apepat' => 'enfermera',
+            'apemat' => 'enfermera',
+            'fechanac' => '2003-12-11',
+            'telefono' => '123456789',
+            'rol' => 'enfermera',
             'activo' => 'si',
+            'email' => 'enfermera@enfermera.com',
+            'password' => Hash::make('Enfermera123')
         ]);
 
-        // Crear una cita para el paciente
-        Citas::create([
-            'fecha' => '2024-07-15',
-            'hora' => '10:00:00',
+        User::create([
+            'nombres' => 'medico',
+            'apepat' => 'medico',
+            'apemat' => 'medico',
+            'fechanac' => '2003-12-11',
+            'telefono' => '123456789',
+            'rol' => 'medico',
             'activo' => 'si',
-            'pacienteid' => $paciente->id,
-            'usuariomedicoid' => 1, // ID del médico usuario. Asegúrate de que este ID exista en tu tabla de usuarios.
+            'email' => 'medico@medico.com',
+            'password' => Hash::make('Medico123')
+        ]);
+
+        User::create([
+            'nombres' => 'secretaria',
+            'apepat' => 'secretaria',
+            'apemat' => 'secretaria',
+            'fechanac' => '2003-12-11',
+            'telefono' => '8343041441',
+            'rol' => 'secretaria',
+            'activo' => 'si',
+            'email' => 'secretaria@secretaria.com',
+            'password' => Hash::make('Secretaria123')
+        ]);
+
+        // Crear un paciente
+        Paciente::create([
+            'nombres' => 'Alexis',
+            'apepat' => 'Saldaña',
+            'apemat' => 'Carvajal',
+            'fechanac' => '2003-12-11',
+            'telefono' => '8343041441',
+            'activo' => 'si',
         ]);
 
         // Crear un servicio
         Productos::create([
-            'nombre' => 'Tijeras',
+            'nombre' => 'Ibuprofeno',
             'precio' => '30',
             'cantidad' => '10',
         ]);
+
+        Productos::create([
+            'nombre' => 'Paracetamol',
+            'precio' => '20',
+            'cantidad' => '15',
+        ]);
+        
         // Crear un producto
         Servicio::create([
             'nombre' => 'Rayos-x',
-            'precio' => '30',
+            'precio' => '300',
+        ]);
+
+        Servicio::create([
+            'nombre' => 'Radiografías',
+            'precio' => '150',
         ]);
     }
 }

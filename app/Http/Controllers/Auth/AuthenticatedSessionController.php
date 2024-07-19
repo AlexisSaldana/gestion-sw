@@ -37,9 +37,18 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        $request->session()->regenerate();
-
         $user = Auth::user();
+
+        // Check the user's role and restrict access if the role is 'enfermera'
+        if ($user->rol === 'enfermera') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect('/login')->withErrors(['email' => 'No tienes permiso para iniciar sesión.']);
+        }
+
+        $request->session()->regenerate();
 
         return $this->redirectToRole($user);
     }
@@ -70,8 +79,6 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->route('dashboardSecretaria');
             case 'secretaria':
                 return redirect()->route('dashboardSecretaria');
-            case 'colaborador':
-                return redirect()->route('dashboardColaborador');
             default:
                 return redirect('/');
         }

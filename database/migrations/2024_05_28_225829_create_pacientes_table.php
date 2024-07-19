@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('apepat', 100); // Columna apellido paterno con un máximo de 100 caracteres
             $table->string('apemat', 100); // Columna apellido materno con un máximo de 100 caracteres
             $table->date('fechanac'); // Columna fecha de nacimiento
+            $table->string('telefono'); // Columna telefono
             $table->enum('activo', ['si', 'no'])->default('si'); // Columna activo con valores 'si' y 'no', por defecto 'si'
             $table->timestamps(); // Columnas created_at y updated_at
         });

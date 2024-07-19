@@ -56,4 +56,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Citas::class, 'usuariomedicoid');
     }
+
+    public function hasRole($roles)
+    {
+        if (is_array($roles)) {
+            return in_array($this->rol, $roles);
+        }
+
+        return $this->rol === $roles;
+    }
 }

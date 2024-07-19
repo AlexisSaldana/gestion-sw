@@ -1,12 +1,30 @@
 <x-app-layout>
     <div class="pt-5">
         <div class="max-w-full mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
                         <div class="flex my-4 mx-4 items-center justify-between">
                             <h1 class="text-xl font-bold text-gray-900 uppercase">Lista de Citas</h1>
                         </div>
+
+                        <!-- Search Form -->
+                        <form method="GET" action="{{ route('citas') }}" class="flex my-4 mx-4 items-center">
+                            <div class="flex text-center border rounded-md items-center px-2">
+                                <input type="text" name="busqueda" placeholder="Buscar usuario" class="border-0" value="{{ request('busqueda') }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray" class="size-5">
+                                    <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="date" name="busqueda" class="border-0" value="{{ request('busqueda') }}">
+                            <button type="submit" class="ml-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">
+                                Buscar
+                            </button>
+                            <button type="reset" onclick="window.location='{{ route('citas') }}'" class="ml-4 px-4 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600">
+                                Reiniciar
+                            </button>
+                        </form>
+
                         <!-- Table -->
                         <table class="min-w-full text-center text-sm whitespace-nowrap">
                             <!-- Table head -->
@@ -33,13 +51,14 @@
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $cita->id }}">
                                                 Editar
                                             </button>
-
-                                            <!-- Formulario para eliminar la cita -->
-                                            <form action="{{ route('citas.eliminar', $cita->id) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4">Eliminar</button>
-                                            </form>
+                                            @if(auth()->user()->hasRole(['medico', 'admin']))
+                                                <!-- Formulario para eliminar la cita -->
+                                                <form action="{{ route('citas.eliminar', $cita->id) }}" method="POST" class="inline-block deleteForm">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="text-red-500 hover:text-red-700 ml-4 deleteButton">Eliminar</button>
+                                                </form>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -69,10 +88,10 @@
                             @method('PATCH')
                             <input type="hidden" id="editFormId" name="id" value="">
                             <div class="grid grid-cols-2 gap-4">
+                                <!-- Fecha -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_fecha" :value="__('Fecha')" />
-                                    <x-text-input id="edit_fecha" class="block mt-1 w-full" type="date" name="fecha" required />
-                                    <x-input-error :messages="$errors->get('fecha')" class="mt-2" />
+                                    <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_fecha">Fecha</label>
+                                    <input id="edit_fecha" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="date" name="fecha" min="{{ \Carbon\Carbon::today()->toDateString() }}" max="{{ \Carbon\Carbon::today()->addMonth()->toDateString() }}" required autofocus />
                                 </div>
                                 <div class="mt-4">
                                     <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_hora">Hora</label>
@@ -92,7 +111,20 @@
                                 </div>
                             </div>
                             <input type="hidden" id="edit_paciente_id" name="paciente_id" />
-                            <input type="hidden" name="usuariomedicoid" value="{{ $usuario->id }}" />
+
+                            <!-- Usuario Médico -->
+                            <div class="mt-4">
+                                <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="usuariomedicoid">Médico</label>
+                                <select id="usuariomedicoid" name="usuariomedicoid" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required>
+                                    @foreach($medicos as $medico)
+                                        <option value="{{ $medico->id }}">{{ $medico->nombres . ' ' . $medico->apepat . '(' . $medico->email . ')'}}</option>
+                                    @endforeach
+                                </select>
+                                @error('usuariomedicoid')
+                                <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="flex items-center justify-end mt-4">
                                 <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
                                     {{ __('Actualizar Cita') }}
@@ -159,7 +191,7 @@
             </div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-                <div class="shadow w-full rounded-lg bg-white overflow-hidden block p-8">
+                <div class="shadow w-full rounded-lg bg-white overflow-hidden block ">
                     <h2 id="modal-title" class="font-bold text-2xl mb-6 text-gray-800 border-b pb-2">Agenda tu cita</h2>
                     <form id="modal-form" method="POST" action="">
                         @csrf
@@ -169,9 +201,6 @@
                             <div class="mt-4">
                                 <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="fecha">Fecha</label>
                                 <input id="fecha" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" type="date" name="fecha" min="{{ \Carbon\Carbon::today()->toDateString() }}" max="{{ \Carbon\Carbon::today()->addMonth()->toDateString() }}" required autofocus />
-                                @error('fecha')
-                                <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
-                                @enderror
                             </div>
 
                             <!-- Hora -->
@@ -191,23 +220,34 @@
                                 <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
-
-                            <!-- Paciente -->
-                            <div class="mt-4">
-                                <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="pacienteid">Paciente</label>
-                                <select id="pacienteid" name="pacienteid" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required>
-                                    @foreach($pacientes as $paciente)
-                                    <option value="{{ $paciente->id }}">{{ $paciente->nombres }} {{ $paciente->apepat }} {{ $paciente->apemat }}</option>
-                                    @endforeach
-                                </select>
-                                @error('pacienteid')
-                                <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Usuario Médico (Oculto) -->
-                            <input type="hidden" name="usuariomedicoid" value="{{ $usuario->id }}" />
                         </div>
+
+                        <!-- Paciente -->
+                        <div class="mt-4">
+                            <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="pacienteid">Paciente</label>
+                            <select id="pacienteid" name="pacienteid" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required>
+                                @foreach($pacientes as $paciente)
+                                <option value="{{ $paciente->id }}">{{ $paciente->nombres }} {{ $paciente->apepat }} {{ $paciente->apemat }}</option>
+                                @endforeach
+                            </select>
+                            @error('pacienteid')
+                            <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Usuario Médico -->
+                        <div class="mt-4">
+                            <label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="usuariomedicoid">Médico</label>
+                            <select id="usuariomedicoid" name="usuariomedicoid" class="block mt-1 w-full bg-gray-200 appearance-none border-2 border-gray-200 rounded-lg py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" required>
+                                @foreach($medicos as $medico)
+                                    <option value="{{ $medico->id }}">{{ $medico->nombres . ' ' . $medico->apepat . '(' . $medico->email . ')'}}</option>
+                                @endforeach
+                            </select>
+                            @error('usuariomedicoid')
+                            <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
+                            @enderror
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm mr-2" id="close-modal">Cancelar</button>
                             <button type="submit" class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">Registrar Cita</button>
@@ -217,31 +257,6 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .calendar-day {
-            position: relative;
-            background-color: white;
-            padding: 12px 3px;
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .calendar-day .day-number {
-            margin-bottom: 8px;
-        }
-
-        .calendar-day .events {
-            flex-grow: 1;
-            overflow-y: auto;
-            max-height: 100px; /* Ajusta este valor según sea necesario */
-        }
-
-        .calendar-day .events div {
-            margin-bottom: 4px;
-        }
-    </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -393,6 +408,48 @@
 
             // Fetch and render events on initial load
             fetchEvents();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                var messages = "";
+                @foreach ($errors->all() as $error)
+                    messages += "{{ $error }}<br>";
+                @endforeach
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: messages
+                });
+            @endif
+
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: "{{ session('success') }}"
+                });
+            @endif
+        });
+
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = this.closest('.deleteForm');
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¡No podrás revertir esto!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
         });
     </script>
 </x-app-layout>
