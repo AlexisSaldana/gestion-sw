@@ -1,4 +1,4 @@
-<x-app-layout>                          
+<x-app-layout>
     <div class="py-12">
         <div class="max-w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
@@ -56,7 +56,7 @@
                                                 <form action="{{ route('productos.eliminar', $producto->id) }}" method="POST" class="inline-block">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-500 hover:text-red-700 ml-4">Eliminar</button>
+                                                    <button type="submit" class="deleteButton text-red-500 hover:text-red-700 ml-4">Eliminar</button>
                                                 </form>
                                             @endif
                                         </td>
@@ -210,5 +210,46 @@
             document.getElementById('editModal').classList.add('hidden');
             document.getElementById('overlay').classList.add('hidden');
         });
+
+        // Add SweetAlert for delete confirmation
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = this.closest('form');
+                if (form) {
+                    Swal.fire({
+                        title: '¿Está seguro de querer eliminar el producto?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
+            });
+        });
+
+        // SweetAlert for success messages
+        @if(session('status'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '{{ session('status') }}'
+            });
+        @endif
+
+        // SweetAlert for error messages
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}'
+            });
+        @endif
     </script>
 </x-app-layout>

@@ -1,17 +1,21 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 
 use App\Models\Consultas;
 use App\Models\Citas;
 use App\Models\Productos;
 use App\Models\Servicio;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Dompdf\Dompdf;
+use Carbon\Carbon;
+use Exception;
 
 class ConsultasController extends Controller
 {
+
+    // Método para descargar el PDF
     public function downloadPDF($id)
     {
         $consulta = Consultas::with(['cita', 'cita.paciente', 'cita.usuarioMedico', 'productos' => function($query) {
@@ -28,36 +32,94 @@ class ConsultasController extends Controller
         return $dompdf->stream('consulta_' . $consulta->id . '.pdf');
     }
 
+    // Método para manejar la descarga por código
+    public function descargarPorCodigo(Request $request)
+    {
+        $request->validate([
+            'codigo' => 'required|string',
+        ]);
+
+        $consulta = Consultas::where('codigo', $request->codigo)->firstOrFail();
+
+        return $this->downloadPDF($consulta->id);
+    }
+    
+    public function show($id)
+    {
+        try {
+            $consulta = Consultas::with(['cita.paciente', 'cita.usuarioMedico', 'enfermera'])->findOrFail($id);
+    
+            $data = [
+                'medico' => $consulta->cita->usuarioMedico ? $consulta->cita->usuarioMedico->nombres . ' ' . $consulta->cita->usuarioMedico->apepat : 'No asignado',
+                'paciente' => $consulta->cita->paciente ? $consulta->cita->paciente->nombres . ' ' . $consulta->cita->paciente->apepat . ' ' . $consulta->cita->paciente->apemat : 'No asignado',
+                'fecha' => $consulta->cita->fecha ?? 'No asignada',
+                'hora' => $consulta->cita->hora ?? 'No asignada',
+                'estado' => $consulta->estado ?? 'No asignado',
+                'motivo' => $consulta->motivo ?? 'No asignado',
+                'talla' => $consulta->talla ?? 'No asignada',
+                'temperatura' => $consulta->temperatura ?? 'No asignada',
+                'saturacion_oxigeno' => $consulta->saturacion_oxigeno ?? 'No asignada',
+                'frecuencia_cardiaca' => $consulta->frecuencia_cardiaca ?? 'No asignada',
+                'peso' => $consulta->peso ?? 'No asignado',
+                'tension_arterial' => $consulta->tension_arterial ?? 'No asignada',
+                'padecimiento' => $consulta->padecimiento ?? 'No asignado',
+                'total_pagar' => $consulta->total_pagar ?? 0.0,
+                'enfermera' => $consulta->enfermera ? $consulta->enfermera->nombres . ' ' . $consulta->enfermera->apepat : 'No asignada',
+            ];
+    
+            return response()->json($data);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     // Mostrar las citas pendientes para tomar una consulta
     public function index(Request $request)
     {
-        $query = Citas::query()->where('activo', 'si')->with(['paciente', 'usuarioMedico', 'consulta']);
+        $query = Citas::query()->with(['paciente', 'usuarioMedico', 'consulta']);
     
-        // Filtros de búsqueda
+        // Filtros de búsqueda por términos
         if ($request->has('busqueda') && $request->busqueda != '') {
             $terms = explode(' ', $request->busqueda);
             $query->where(function($q) use ($terms) {
                 foreach ($terms as $term) {
-                    $q->orWhere('usuariomedicoid', 'like', '%' . $term . '%');
-                    $q->orWhere('pacienteid', 'like', '%' . $term . '%');
-                    $q->orWhere('fecha', 'like', '%' . $term . '%');
+                    $q->orWhereHas('usuarioMedico', function($q) use ($term) {
+                        $q->where('nombres', 'like', '%' . $term . '%')
+                          ->orWhere('apepat', 'like', '%' . $term . '%');
+                    });
+                    $q->orWhereHas('paciente', function($q) use ($term) {
+                        $q->where('nombres', 'like', '%' . $term . '%')
+                          ->orWhere('apepat', 'like', '%' . $term . '%')
+                          ->orWhere('apemat', 'like', '%' . $term . '%');
+                    });
                 }
             });
         }
-
+    
+        // Filtro por fecha
+        if ($request->has('fecha') && $request->fecha != '') {
+            $query->where('fecha', '=', $request->fecha);
+        } else {
+            // Filtro por defecto desde hoy en adelante
+            $query->where('fecha', '>=', Carbon::today()->toDateString());
+        }
+    
         // Filtro por estado
         if ($request->has('estado') && $request->estado != '') {
-            $estado = $request->estado == 'en proceso' ? 'En proceso' : 'Finalizado'; // Ajusta según tus valores de estado
+            $estado = $request->estado == 'en proceso' ? 'En proceso' : 'Finalizado';
             $query->whereHas('consulta', function($q) use ($estado) {
                 $q->where('estado', $estado);
             });
         }
     
+        // Ordenar por fecha
+        $query->orderBy('fecha', 'asc');
+    
         $citas = $query->get();
     
         return view('secretaria.consultas.consultas', compact('citas'));
     }
-
+    
     // Mostrar el formulario para crear una nueva consulta
     public function create($citaId)
     {
@@ -90,7 +152,7 @@ class ConsultasController extends Controller
             'servicios' => 'nullable|array',
             'servicios.*' => 'exists:servicios,id',
         ]);
-
+    
         $consulta = Consultas::create([
             'motivo' => $request->input('motivo'),
             'total_pagar' => $request->input('total_pagar'),
@@ -106,7 +168,7 @@ class ConsultasController extends Controller
             'padecimiento' => $request->input('padecimiento'),
             'enfermera_id' => $request->input('enfermera_id'),
         ]);
-
+    
         // Adjuntar productos si existen
         if ($request->has('productos')) {
             $productos = $request->input('productos');
@@ -118,12 +180,12 @@ class ConsultasController extends Controller
                 ]);
             }
         }
-
+    
         // Adjuntar servicios si existen
         if ($request->has('servicios')) {
             $consulta->servicios()->attach($request->input('servicios'));
         }
-
+    
         return redirect()->route('consultas.index')->with('success', 'Consulta creada exitosamente');
     }
 

@@ -26,6 +26,11 @@
         <h1 class="sitename">Care Center</h1>
       </a>
 
+      <form method="GET" action="/consultas/descargar" class="d-flex align-items-center">
+        <input type="text" name="codigo" placeholder="Ingresar código" class="form-control me-2" required>
+        <button type="submit" class="btn btn-primary">Descargar PDF</button>
+      </form>
+
       <a class="btn-getstarted" href="{{ route('login') }}">Login</a>
     </div>
   </header>

@@ -14,7 +14,7 @@
                         <!-- Search Form -->
                         <form method="GET" action="{{ route('servicios') }}" class="flex my-4 mx-4 items-center">
                             <div class="flex text-center border rounded-md items-center px-2">
-                            <input type="text" name="busqueda" placeholder="Buscar servicio" class="border-0" value="{{ request('busqueda') }}">
+                                <input type="text" name="busqueda" placeholder="Buscar servicio" class="border-0" value="{{ request('busqueda') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray" class="size-5">
                                     <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
                                 </svg>
@@ -54,7 +54,7 @@
                                                 <form action="{{ route('servicios.eliminar', $servicio->id) }}" method="POST" class="inline-block">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-500 hover:text-red-700 ml-4">Eliminar</button>
+                                                    <button type="submit" class="deleteButton text-red-500 hover:text-red-700 ml-4">Eliminar</button>
                                                 </form>
                                             @endif
                                         </td>
@@ -98,6 +98,9 @@
                                 <x-input-error :messages="$errors->get('precio')" class="mt-2" />
                             </div>
 
+                            <!-- Activo -->
+                            <input type="hidden" name="activo" value="si">
+
                             <div class="flex items-center justify-end mt-4">
                                 <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
                                     {{ __('Registrar Servicio') }}
@@ -138,6 +141,9 @@
                                 <x-text-input id="edit_precio" class="block mt-1 w-full" type="number" name="precio" required />
                                 <x-input-error :messages="$errors->get('precio')" class="mt-2" />
                             </div>
+
+                            <!-- Activo -->
+                            <input type="hidden" name="activo" value="si">
 
                             <div class="flex items-center justify-end mt-4">
                                 <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
@@ -193,5 +199,46 @@
             document.getElementById('editModal').classList.add('hidden');
             document.getElementById('overlay').classList.add('hidden');
         });
+
+        // Add SweetAlert for delete confirmation
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = this.closest('form');
+                if (form) {
+                    Swal.fire({
+                        title: '¿Está seguro de querer eliminar el servicio?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Sí, eliminar',
+                        cancelButtonText: 'Cancelar'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                }
+            });
+        });
+
+        // SweetAlert for success messages
+        @if(session('status'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '{{ session('status') }}'
+            });
+        @endif
+
+        // SweetAlert for error messages
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}'
+            });
+        @endif
     </script>
 </x-app-layout>

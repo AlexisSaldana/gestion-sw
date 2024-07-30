@@ -37,4 +37,11 @@ class Citas extends Model
     {
         return $this->hasOne(Consultas::class, 'cita_id');
     }
+    
+    // Relación con el modelo User (enfermera)
+    public function enfermera()
+    {
+        return $this->hasOneThrough(User::class, Consultas::class, 'cita_id', 'id', 'id', 'enfermera_id');
+    }
+    
 }

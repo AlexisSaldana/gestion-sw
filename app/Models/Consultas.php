@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Consultas extends Model
 {
@@ -14,6 +15,7 @@ class Consultas extends Model
         'cita_id',
         'usuariomedicoid',
         'estado',
+        'codigo',
         'motivo',
         'talla',
         'temperatura',
@@ -49,5 +51,14 @@ class Consultas extends Model
     public function servicios()
     {
         return $this->belongsToMany(Servicio::class, 'consulta_servicio', 'consulta_id', 'servicio_id');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($consulta) {
+            $consulta->codigo = Str::random(10);
+        });
     }
 }

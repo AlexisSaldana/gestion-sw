@@ -13,23 +13,36 @@ class CitasController extends Controller
 {
     public function mostrarCitas(Request $request)
     {
-        $query = Citas::query();
+        $query = Citas::query()->with(['paciente', 'usuarioMedico']);
     
         // Filtros de búsqueda
         if ($request->has('busqueda') && $request->busqueda != '') {
             $terms = explode(' ', $request->busqueda);
             $query->where(function($q) use ($terms) {
                 foreach ($terms as $term) {
-                    $q->orWhere('usuariomedicoid', 'like', '%' . $term . '%');
-                    $q->orWhere('pacienteid', 'like', '%' . $term . '%');
+                    $q->orWhereHas('usuarioMedico', function($q) use ($term) {
+                        $q->where('nombres', 'like', '%' . $term . '%')
+                          ->orWhere('apepat', 'like', '%' . $term . '%');
+                    });
+                    $q->orWhereHas('paciente', function($q) use ($term) {
+                        $q->where('nombres', 'like', '%' . $term . '%')
+                          ->orWhere('apepat', 'like', '%' . $term . '%')
+                          ->orWhere('apemat', 'like', '%' . $term . '%');
+                    });
                     $q->orWhere('fecha', 'like', '%' . $term . '%');
                 }
             });
         }
+
+        // Filtro por fecha específica
+        if ($request->has('fecha') && $request->fecha != '') {
+            $query->where('fecha', '=', $request->fecha);
+        }
     
         $this->actualizarCitasPasadas();
     
-        $citas = Citas::where('activo', 'si')->get();
+        // Obtener citas activas y filtradas
+        $citas = $query->where('activo', 'si')->orderBy('fecha', 'asc')->get();
         $pacientes = Paciente::where('activo', 'si')->get();
         $medicos = User::Where('rol', 'medico')->get();
     
@@ -39,8 +52,6 @@ class CitasController extends Controller
                                     ->whereIn('rol', ['medico', 'secretaria','enfermera'])
                                     ->count();
         $usuario = auth()->user();
-    
-        $citas = $query->where('activo', 'si')->get();
     
         return view('secretaria.citas.citas', compact('citas', 'usuario', 'pacientes', 'medicos', 'totalCitasActivas', 'totalPacientesActivos', 'totalUsuariosActivos'));
     }
@@ -65,69 +76,68 @@ class CitasController extends Controller
             'pacienteid' => 'required|exists:pacientes,id',
             'usuariomedicoid' => 'required|exists:users,id'
         ]);
-    
+
         $fechaCita = Carbon::parse($request->fecha)->startOfDay();
         $today = Carbon::today()->startOfDay();
-    
+
         if ($fechaCita->eq($today)) {
             return redirect()->back()->withErrors(['fecha' => 'No se pueden crear citas para el mismo día.'])->withInput();
         }
-    
+
         $existeCita = Citas::where('fecha', $request->fecha)
             ->where('hora', $request->hora)
             ->where('usuariomedicoid', $request->usuariomedicoid)
             ->where('activo', 'si')
             ->exists();
-    
+
         if ($existeCita) {
             return redirect()->back()->withErrors(['fecha' => 'Ya existe una cita agendada para esta fecha y hora con el mismo médico.'])->withInput();
         }
-    
+
         Citas::create($request->all());
-    
+
         return redirect()->route('citas')->with('success', 'Cita registrada correctamente');
     }
-    
+
     public function updateCita(Request $request, $id)
     {
         $request->validate([
             'fecha' => 'required|date',
             'hora' => ['required', 'regex:/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/'],
         ]);
-    
+
         $cita = Citas::findOrFail($id);
-    
+
         $fechaCita = Carbon::parse($request->fecha);
         $today = Carbon::today();
-    
+
         if ($fechaCita->eq($today)) {
             return redirect()->back()->withErrors(['fecha' => 'No se pueden editar citas para el mismo día.'])->withInput();
         }
-    
+
         $existeCita = Citas::where('fecha', $request->fecha)
             ->where('hora', $request->hora)
             ->where('usuariomedicoid', $request->usuariomedicoid)
             ->where('id', '!=', $id)
             ->where('activo', 'si')
             ->exists();
-    
+
         if ($existeCita) {
             return redirect()->back()->withErrors(['fecha' => 'Ya existe una cita agendada para esta fecha y hora con el mismo médico.'])->withInput();
         }
-    
+
         $cita->update($request->all());
-        
+
         return redirect()->route('citas')->with('success', 'Cita actualizada correctamente');
     }
-    
+
     public function eliminarCita($id)
     {
         $cita = Citas::findOrFail($id);
         $cita->update(['activo' => 'no']);
-    
+
         return redirect()->route('citas')->with('success', 'Cita eliminada correctamente');
     }
-    
     
     public function getEvents()
     {
@@ -150,5 +160,5 @@ class CitasController extends Controller
         $cita = Citas::findOrFail($id);
         
         return response()->json($cita);
-    }    
+    }  
 }

@@ -14,6 +14,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+Route::get('/consultas/descargar', [ConsultasController::class, 'descargarPorCodigo'])->name('consultas.descargarPorCodigo');
+
 // Aqui son las rutas que verifican que hayan iniciado sesion
 Route::middleware(['auth', 'verified'])->group(function () {
     // Rutas del perfil de usuario
@@ -45,7 +47,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/secretaria/citas/editar/{id}', [CitasController::class, 'updateCita'])->name('citas.update');
     Route::delete('/secretaria/citas/eliminar/{id}', [CitasController::class, 'eliminarCita'])->name('citas.eliminar');
     Route::get('/get-events', [CitasController::class, 'getEvents']);
-    Route::patch('/secretaria/citas/mover/{id}', [CitasController::class, 'moverCita']);
 
     // Rutas de Usuarios
     Route::get('/secretaria/usuarios', [UsuariosController::class, 'mostrarUsuarios'])->name('usuarios');
@@ -58,7 +59,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Rutas de Servicios
     Route::get('/secretaria/servicios', [ServiciosController::class, 'mostrarServicios'])->name('servicios');
     Route::post('/secretaria/servicios/agregarServicio', [ServiciosController::class, 'storeServicios'])->name('servicios.store');
-    Route::get('/secretaria/servicios/agregar', [ServiciosController::class, 'crearServicio'])->name('servicios.agregar');
     Route::get('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'editarServicio'])->name('servicios.editar');
     Route::patch('/secretaria/servicios/editar/{id}', [ServiciosController::class, 'updateServicio'])->name('servicios.update');
     Route::delete('/secretaria/servicios/eliminar/{id}', [ServiciosController::class, 'eliminarServicio'])->name('servicios.eliminar');
@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/consultas/editar/{id}', [ConsultasController::class, 'edit'])->name('consultas.edit'); 
     Route::patch('consultas/{id}', [ConsultasController::class, 'update'])->name('consultas.update');
     Route::get('/citas/verificar', [CitasController::class, 'verificarCita'])->name('citas.verificar');
+    Route::get('/consultas/{id}', [ConsultasController::class, 'show'])->name('consultas.show');
 
     // Rutas del data table
     Route::get('/buscar-pacientes', [PacientesController::class, 'buscarPacientes'])->name('pacientes.buscar');

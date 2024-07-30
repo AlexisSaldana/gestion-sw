@@ -22,7 +22,6 @@ class ServiciosController extends Controller
                 }
             });
         }
-
         // Obtiene todos los servicios que están activos y coinciden con la búsqueda
         $servicios = $query->where('activo', 'si')->get();
         return view('secretaria.servicios.servicios', compact('servicios'));

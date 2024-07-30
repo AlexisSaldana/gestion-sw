@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +14,33 @@ class PacientesController extends Controller
     // Guarda un nuevo paciente
     public function storePacientes(Request $request)
     {
-        // Validación de los datos recibidos
+        try {
+            Log::info('Iniciando validación de datos');
+            $validatedData = $request->validate([
+                'nombres' => 'required|string|max:255',
+                'apepat' => 'required|string|max:255',
+                'apemat' => 'required|string|max:255',
+                'fechanac' => 'required|date',
+                'telefono' => 'required|string|max:15',
+            ]);
+    
+            Log::info('Datos validados correctamente', $validatedData);
+            $paciente = Paciente::create($validatedData);
+    
+            Log::info('Paciente creado correctamente');
+            return redirect()->route('dashboardSecretaria')->with('status', 'Paciente registrado correctamente');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Error de validación', ['errors' => $e->errors()]);
+            return redirect()->route('dashboardSecretaria')->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error al registrar el paciente', ['message' => $e->getMessage()]);
+            return redirect()->route('dashboardSecretaria')->with('error', 'Error al registrar el paciente');
+        }
+    }
+    
+    // Actualiza la información de un paciente específico
+    public function updatePaciente(Request $request, $id)
+    {
         $request->validate([
             'nombres' => 'required|string|max:255',
             'apepat' => 'required|string|max:255',
@@ -21,12 +48,20 @@ class PacientesController extends Controller
             'fechanac' => 'required|date',
             'telefono' => 'required|string|max:15',
         ]);
-
-        // Creación del paciente
-        Paciente::create($request->all());
-
-        // Redirecciona a la vista del dashboard de la secretaria con un mensaje de éxito
-        return redirect()->route('dashboardSecretaria')->with('status', 'Paciente registrado correctamente');
+    
+        $paciente = Paciente::findOrFail($id);
+        $paciente->update($request->all());
+    
+        return redirect()->route('dashboardSecretaria')->with('status', 'Paciente actualizado correctamente');
+    }
+    
+    // Marca a un paciente como inactivo (eliminado)
+    public function eliminarPaciente($id)
+    {
+        $paciente = Paciente::findOrFail($id);
+        $paciente->update(['activo' => 'no']);
+    
+        return redirect()->route('dashboardSecretaria')->with('status', 'Paciente eliminado correctamente');
     }
 
     // Muestra todos los pacientes activos
@@ -62,34 +97,5 @@ class PacientesController extends Controller
     {
         $paciente = Paciente::findOrFail($id);
         return response()->json($paciente);
-    }
-
-    // Actualiza la información de un paciente específico
-    public function updatePaciente(Request $request, $id)
-    {
-        // Validación de los datos recibidos
-        $request->validate([
-            'nombres' => 'required|string|max:255',
-            'apepat' => 'required|string|max:255',
-            'apemat' => 'required|string|max:255',
-            'fechanac' => 'required|date',
-            'telefono' => 'required|string|max:15',
-        ]);
-
-        // Encuentra el paciente y actualiza sus datos
-        $paciente = Paciente::findOrFail($id);
-        $paciente->update($request->all());
-
-        // Redirecciona al dashboard con un mensaje de éxito
-        return redirect()->route('dashboardSecretaria')->with('status', 'Paciente actualizado correctamente');
-    }
-
-    // Marca a un paciente como inactivo (eliminado)
-    public function eliminarPaciente($id)
-    {
-        $paciente = Paciente::findOrFail($id);
-        $paciente->update(['activo' => 'no']);
-
-        return redirect()->route('dashboardSecretaria')->with('status', 'Paciente eliminado correctamente');
     }
 }

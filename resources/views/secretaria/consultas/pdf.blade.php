@@ -41,6 +41,12 @@
     <div class="content">
         <h2>Datos de la Consulta</h2>
         <p><strong>Médico:</strong> {{ $consulta->cita->usuarioMedico->nombres }} {{ $consulta->cita->usuarioMedico->apepat }}</p>
+        <p><strong>Enfermera:</strong> 
+        @if ($consulta->cita->enfermera)
+            {{ $consulta->cita->enfermera->nombres }} {{ $consulta->cita->enfermera->apepat }}
+        @else
+            No asignada
+        @endif      
         <p><strong>Paciente:</strong> {{ $consulta->cita->paciente->nombres }} {{ $consulta->cita->paciente->apepat }} {{ $consulta->cita->paciente->apemat }}</p>
         <p><strong>Fecha:</strong> {{ $consulta->cita->fecha }}</p>
         <p><strong>Hora:</strong> {{ $consulta->cita->hora }}</p>

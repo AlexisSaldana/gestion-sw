@@ -64,11 +64,11 @@
                                                 Editar
                                             </button>
                                             @if(auth()->user()->hasRole(['medico', 'admin']))
-                                                <!-- Formulario para eliminar el usuario -->
+                                                <!-- Botón para eliminar el usuario -->
                                                 <form action="{{ route('usuarios.eliminar', $usuario->id) }}" method="POST" class="inline-block">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-500 hover:text-red-700 ml-4">Eliminar</button>
+                                                    <button type="submit" class="deleteButton text-red-500 hover:text-red-700 ml-4">Eliminar</button>
                                                 </form>
                                             @endif
                                         </td>
@@ -100,7 +100,7 @@
 
                             <!-- Nombres -->
                             <div class="mt-4 col-span-2">
-                                <x-input-label for="nombres" :value="__('Nombres')" />
+                                <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="nombres" :value="__('Nombres')" />
                                 <x-text-input id="nombres" class="block mt-1 w-full" type="text" name="nombres" :value="old('nombres')" required autofocus autocomplete="name" />
                                 <x-input-error :messages="$errors->get('nombres')" class="mt-2" />
                             </div>
@@ -108,35 +108,35 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Apellido Paterno -->
                                 <div class="mt-4">
-                                    <x-input-label for="apepat" :value="__('Apellido Paterno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="apepat" :value="__('Apellido Paterno')" />
                                     <x-text-input id="apepat" class="block mt-1 w-full" type="text" name="apepat" :value="old('apepat')" required autofocus autocomplete="name" />
                                     <x-input-error :messages="$errors->get('apepat')" class="mt-2" />
                                 </div>
 
                                 <!-- Apellido Materno -->
                                 <div class="mt-4">
-                                    <x-input-label for="apemat" :value="__('Apellido Materno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="apemat" :value="__('Apellido Materno')" />
                                     <x-text-input id="apemat" class="block mt-1 w-full" type="text" name="apemat" :value="old('apemat')" required autofocus autocomplete="name" />
                                     <x-input-error :messages="$errors->get('apemat')" class="mt-2" />
                                 </div>
 
                                 <!-- Fecha de Nacimiento -->
                                 <div class="mt-4">
-                                    <x-input-label for="fechanac" :value="__('Fecha de Nacimiento')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="fechanac" :value="__('Fecha de Nacimiento')" />
                                     <x-text-input id="fechanac" class="block mt-1 w-full" type="date" name="fechanac" :value="old('fechanac')" required autofocus />
                                     <x-input-error :messages="$errors->get('fechanac')" class="mt-2" />
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="mt-4">
-                                    <x-input-label for="telefono" :value="__('Teléfono')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="telefono" :value="__('Teléfono')" />
                                     <x-text-input id="telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" required autofocus autocomplete="tel" />
                                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
                                 </div>
 
                                 <!-- Rol -->
                                 <div class="mt-4 col-span-2">
-                                    <x-input-label for="rol" :value="__('Rol')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="rol" :value="__('Rol')" />
                                     <select id="rol" name="rol" class="block mt-1 w-full" required>
                                         <option value="medico" {{ old('rol') == 'medico' ? 'selected' : '' }}>Médico</option>
                                         <option value="secretaria" {{ old('rol') == 'secretaria' ? 'selected' : '' }}>Secretaria</option>
@@ -147,21 +147,21 @@
                                 
                                 <!-- Correo Electrónico -->
                                 <div class="mt-4 col-span-2">
-                                    <x-input-label for="email" :value="__('Correo Electrónico')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="email" :value="__('Correo Electrónico')" />
                                     <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
                                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                 </div>
 
                                 <!-- Contraseña -->
                                 <div class="mt-4">
-                                    <x-input-label for="password" :value="__('Contraseña')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="password" :value="__('Contraseña')" />
                                     <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
                                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
 
                                 <!-- Confirmar Contraseña -->
                                 <div class="mt-4">
-                                    <x-input-label for="password_confirmation" :value="__('Confirmar Contraseña')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="password_confirmation" :value="__('Confirmar Contraseña')" />
                                     <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                                 </div>
@@ -196,7 +196,7 @@
 
                             <!-- Nombres -->
                             <div class="mt-4 col-span-2">
-                                <x-input-label for="edit_nombres" :value="__('Nombres')" />
+                                <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_nombres" :value="__('Nombres')" />
                                 <x-text-input id="edit_nombres" class="block mt-1 w-full" type="text" name="nombres" required autofocus />
                                 <x-input-error :messages="$errors->get('nombres')" class="mt-2" />
                             </div>
@@ -204,35 +204,35 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Apellido Paterno -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_apepat" :value="__('Apellido Paterno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_apepat" :value="__('Apellido Paterno')" />
                                     <x-text-input id="edit_apepat" class="block mt-1 w-full" type="text" name="apepat" required autofocus />
                                     <x-input-error :messages="$errors->get('apepat')" class="mt-2" />
                                 </div>
 
                                 <!-- Apellido Materno -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_apemat" :value="__('Apellido Materno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_apemat" :value="__('Apellido Materno')" />
                                     <x-text-input id="edit_apemat" class="block mt-1 w-full" type="text" name="apemat" required autofocus />
                                     <x-input-error :messages="$errors->get('apemat')" class="mt-2" />
                                 </div>
 
                                 <!-- Fecha de Nacimiento -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_fechanac" :value="__('Fecha de Nacimiento')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_fechanac" :value="__('Fecha de Nacimiento')" />
                                     <x-text-input id="edit_fechanac" class="block mt-1 w-full" type="date" name="fechanac" required />
                                     <x-input-error :messages="$errors->get('fechanac')" class="mt-2" />
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_telefono" :value="__('Teléfono')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_telefono" :value="__('Teléfono')" />
                                     <x-text-input id="edit_telefono" class="block mt-1 w-full" type="text" name="telefono" required autofocus autocomplete="tel" />
                                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
                                 </div>
 
                                 <!-- Rol -->
                                 <div class="mt-4 col-span-2">
-                                    <x-input-label for="edit_rol" :value="__('Rol')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_rol" :value="__('Rol')" />
                                     <select id="edit_rol" name="rol" class="block mt-1 w-full" required>
                                         <option value="medico">Médico</option>
                                         <option value="secretaria">Secretaria</option>
@@ -243,21 +243,21 @@
                                 
                                 <!-- Correo Electrónico -->
                                 <div class="mt-4 col-span-2">
-                                    <x-input-label for="edit_email" :value="__('Correo Electrónico')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_email" :value="__('Correo Electrónico')" />
                                     <x-text-input id="edit_email" class="block mt-1 w-full" type="email" name="email" required autocomplete="username" />
                                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                 </div>
 
                                 <!-- Contraseña -->
                                 <div class="mt-4">
-                                    <x-input-label for="password" :value="__('Contraseña')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="password" :value="__('Contraseña')" />
                                     <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
                                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
 
                                 <!-- Confirmar Contraseña -->
                                 <div class="mt-4">
-                                    <x-input-label for="password_confirmation" :value="__('Confirmar Contraseña')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="password_confirmation" :value="__('Confirmar Contraseña')" />
                                     <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
                                     <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
                                 </div>
@@ -282,45 +282,86 @@
 
     <!-- Scripts -->
     <script>
-        document.getElementById('openAddModalButton').addEventListener('click', function() {
-            document.getElementById('addModal').classList.remove('hidden');
-            document.getElementById('overlay').classList.remove('hidden');
-        });
+    document.getElementById('openAddModalButton').addEventListener('click', function() {
+        document.getElementById('addModal').classList.remove('hidden');
+        document.getElementById('overlay').classList.remove('hidden');
+    });
 
-        document.getElementById('closeAddModalButton').addEventListener('click', function() {
-            document.getElementById('addModal').classList.add('hidden');
-            document.getElementById('overlay').classList.add('hidden');
-        });
+    document.getElementById('closeAddModalButton').addEventListener('click', function() {
+        document.getElementById('addModal').classList.add('hidden');
+        document.getElementById('overlay').classList.add('hidden');
+    });
 
-        document.getElementById('overlay').addEventListener('click', function() {
-            document.getElementById('addModal').classList.add('hidden');
-            document.getElementById('editModal').classList.add('hidden');
-            document.getElementById('overlay').classList.add('hidden');
-        });
+    document.getElementById('overlay').addEventListener('click', function() {
+        document.getElementById('addModal').classList.add('hidden');
+        document.getElementById('editModal').classList.add('hidden');
+        document.getElementById('overlay').classList.add('hidden');
+    });
 
-        document.querySelectorAll('.openEditModalButton').forEach(button => {
-            button.addEventListener('click', function() {
-                const usuarioId = this.getAttribute('data-id');
-                fetch(`/secretaria/usuarios/editar/${usuarioId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('edit_nombres').value = data.nombres;
-                        document.getElementById('edit_apepat').value = data.apepat;
-                        document.getElementById('edit_apemat').value = data.apemat;
-                        document.getElementById('edit_fechanac').value = data.fechanac;
-                        document.getElementById('edit_telefono').value = data.telefono;
-                        document.getElementById('edit_rol').value = data.rol;
-                        document.getElementById('edit_email').value = data.email;
-                        document.getElementById('editForm').action = `/secretaria/usuarios/editar/${usuarioId}`;
-                        document.getElementById('editModal').classList.remove('hidden');
-                        document.getElementById('overlay').classList.remove('hidden');
-                    });
-            });
+    document.querySelectorAll('.openEditModalButton').forEach(button => {
+        button.addEventListener('click', function() {
+            const usuarioId = this.getAttribute('data-id');
+            fetch(`/secretaria/usuarios/editar/${usuarioId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('edit_nombres').value = data.nombres;
+                    document.getElementById('edit_apepat').value = data.apepat;
+                    document.getElementById('edit_apemat').value = data.apemat;
+                    document.getElementById('edit_fechanac').value = data.fechanac;
+                    document.getElementById('edit_telefono').value = data.telefono;
+                    document.getElementById('edit_rol').value = data.rol;
+                    document.getElementById('edit_email').value = data.email;
+                    document.getElementById('editForm').action = `/secretaria/usuarios/editar/${usuarioId}`;
+                    document.getElementById('editModal').classList.remove('hidden');
+                    document.getElementById('overlay').classList.remove('hidden');
+                });
         });
+    });
 
-        document.getElementById('closeEditModalButton').addEventListener('click', function() {
-            document.getElementById('editModal').classList.add('hidden');
-            document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('closeEditModalButton').addEventListener('click', function() {
+        document.getElementById('editModal').classList.add('hidden');
+        document.getElementById('overlay').classList.add('hidden');
+    });
+
+    // Add SweetAlert for delete confirmation
+    document.querySelectorAll('.deleteButton').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const form = this.closest('form');
+            if (form) {
+                Swal.fire({
+                    title: '¿Está seguro de querer eliminar el usuario?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
         });
+    });
+
+    // SweetAlert for success messages
+    @if(session('status'))
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('status') }}'
+        });
+    @endif
+
+    // SweetAlert for error messages
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}'
+        });
+    @endif
     </script>
 </x-app-layout>

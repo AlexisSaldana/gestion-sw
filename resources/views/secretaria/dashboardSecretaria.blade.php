@@ -13,7 +13,7 @@
                             {{ __('Agregar Paciente') }}
                         </button>
                     </div>
-                    
+
                     <!-- Search Form -->
                     <form method="GET" action="{{ route('dashboardSecretaria') }}" class="flex my-4 mx-4 items-center">
                         <div class="flex text-center border rounded-md items-center px-2">
@@ -21,7 +21,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray" class="size-5">
                                 <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
                             </svg>
-                        </div>                        
+                        </div>
                         <button type="submit" class="ml-4 px-4 py-2 bg-green-500 text-white font-semibold rounded-md hover:bg-green-600">
                             Buscar
                         </button>
@@ -29,7 +29,7 @@
                             Reiniciar
                         </button>
                     </form>
-                    
+
                     <!-- Table -->
                     <table class="min-w-full text-center text-sm whitespace-nowrap">
                         <!-- Table head -->
@@ -63,7 +63,7 @@
                                             <form action="{{ route('pacientes.eliminar', $paciente->id) }}" method="POST" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-red-500 hover:text-red-700 ml-4">Eliminar</button>
+                                                <button type="submit" class="deleteButton text-red-500 hover:text-red-700 ml-4">Eliminar</button>
                                             </form>
                                         @endif
                                     </td>
@@ -94,7 +94,7 @@
 
                             <!-- Nombres -->
                             <div class="mt-4 col-span-2">
-                                <x-input-label for="nombres" :value="__('Nombres')" />
+                                <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="nombres" :value="__('Nombres')" />
                                 <x-text-input id="nombres" class="block mt-1 w-full" type="text" name="nombres" :value="old('nombres')" required autofocus autocomplete="name" />
                                 <x-input-error :messages="$errors->get('nombres')" class="mt-2" />
                             </div>
@@ -102,28 +102,28 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Apellido Paterno -->
                                 <div class="mt-4">
-                                    <x-input-label for="apepat" :value="__('Apellido Paterno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="apepat" :value="__('Apellido Paterno')" />
                                     <x-text-input id="apepat" class="block mt-1 w-full" type="text" name="apepat" :value="old('apepat')" required autofocus autocomplete="name" />
                                     <x-input-error :messages="$errors->get('apepat')" class="mt-2" />
                                 </div>
 
                                 <!-- Apellido Materno -->
                                 <div class="mt-4">
-                                    <x-input-label for="apemat" :value="__('Apellido Materno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="apemat" :value="__('Apellido Materno')" />
                                     <x-text-input id="apemat" class="block mt-1 w-full" type="text" name="apemat" :value="old('apemat')" required autofocus autocomplete="name" />
                                     <x-input-error :messages="$errors->get('apemat')" class="mt-2" />
                                 </div>
 
                                 <!-- Fecha de Nacimiento -->
                                 <div class="mt-4">
-                                    <x-input-label for="fechanac" :value="__('Fecha de Nacimiento')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="fechanac" :value="__('Fecha de Nacimiento')" />
                                     <x-text-input id="fechanac" class="block mt-1 w-full" type="date" name="fechanac" :value="old('fechanac')" required autofocus />
                                     <x-input-error :messages="$errors->get('fechanac')" class="mt-2" />
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="mt-4">
-                                    <x-input-label for="telefono" :value="__('Teléfono')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="telefono" :value="__('Teléfono')" />
                                     <x-text-input id="telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" required autofocus autocomplete="tel" />
                                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
                                 </div>
@@ -158,7 +158,7 @@
 
                             <!-- Nombres -->
                             <div class="mt-4 col-span-2">
-                                <x-input-label for="edit_nombres" :value="__('Nombres')" />
+                                <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_nombres" :value="__('Nombres')" />
                                 <x-text-input id="edit_nombres" class="block mt-1 w-full" type="text" name="nombres" required autofocus />
                                 <x-input-error :messages="$errors->get('nombres')" class="mt-2" />
                             </div>
@@ -166,29 +166,29 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <!-- Apellido Paterno -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_apepat" :value="__('Apellido Paterno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_apepat" :value="__('Apellido Paterno')" />
                                     <x-text-input id="edit_apepat" class="block mt-1 w-full" type="text" name="apepat" required autofocus />
                                     <x-input-error :messages="$errors->get('apepat')" class="mt-2" />
                                 </div>
 
                                 <!-- Apellido Materno -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_apemat" :value="__('Apellido Materno')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_apemat" :value="__('Apellido Materno')" />
                                     <x-text-input id="edit_apemat" class="block mt-1 w-full" type="text" name="apemat" required autofocus />
                                     <x-input-error :messages="$errors->get('apemat')" class="mt-2" />
                                 </div>
 
                                 <!-- Fecha de Nacimiento -->
                                 <div class="mt-4">
-                                    <x-input-label for="edit_fechanac" :value="__('Fecha de Nacimiento')" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_fechanac" :value="__('Fecha de Nacimiento')" />
                                     <x-text-input id="edit_fechanac" class="block mt-1 w-full" type="date" name="fechanac" required />
                                     <x-input-error :messages="$errors->get('fechanac')" class="mt-2" />
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="mt-4">
-                                    <x-input-label for="telefono" :value="__('Teléfono')" />
-                                    <x-text-input id="telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" required autofocus autocomplete="tel" />
+                                    <x-input-label class="text-gray-800 block mb-1 font-bold text-sm tracking-wide" for="edit_telefono" :value="__('Teléfono')" />
+                                    <x-text-input id="edit_telefono" class="block mt-1 w-full" type="text" name="telefono" :value="old('telefono')" required autofocus autocomplete="tel" />
                                     <x-input-error :messages="$errors->get('telefono')" class="mt-2" />
                                 </div>
                             </div>
@@ -238,7 +238,7 @@
                         document.getElementById('edit_apepat').value = data.apepat;
                         document.getElementById('edit_apemat').value = data.apemat;
                         document.getElementById('edit_fechanac').value = data.fechanac;
-                        document.getElementById('telefono').value = data.telefono;
+                        document.getElementById('edit_telefono').value = data.telefono;
                         document.getElementById('editForm').action = `/secretaria/pacientes/editar/${pacienteId}`;
                         document.getElementById('editModal').classList.remove('hidden');
                         document.getElementById('overlay').classList.remove('hidden');
@@ -250,5 +250,44 @@
             document.getElementById('editModal').classList.add('hidden');
             document.getElementById('overlay').classList.add('hidden');
         });
+
+        // Add SweetAlert for delete confirmation
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const form = this.closest('form');
+                Swal.fire({
+                    title: '¿Está seguro de querer eliminar el paciente?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // SweetAlert for success messages
+        @if(session('status'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '{{ session('status') }}'
+            });
+        @endif
+
+        // SweetAlert for error messages
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}'
+            });
+        @endif
     </script>
 </x-app-layout>
