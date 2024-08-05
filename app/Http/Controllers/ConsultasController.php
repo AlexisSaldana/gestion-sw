@@ -11,6 +11,7 @@ use App\Models\User;
 use Dompdf\Dompdf;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ConsultasController extends Controller
 {
@@ -38,10 +39,13 @@ class ConsultasController extends Controller
         $request->validate([
             'codigo' => 'required|string',
         ]);
-
-        $consulta = Consultas::where('codigo', $request->codigo)->firstOrFail();
-
-        return $this->downloadPDF($consulta->id);
+    
+        try {
+            $consulta = Consultas::where('codigo', $request->codigo)->firstOrFail();
+            return $this->downloadPDF($consulta->id);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with('error', 'Código incorrecto, por favor intente de nuevo.');
+        }
     }
     
     public function show($id)

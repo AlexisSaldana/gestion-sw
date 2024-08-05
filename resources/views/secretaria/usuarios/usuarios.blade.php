@@ -279,7 +279,7 @@
             </div>
         </div>
     </div>
-
+    
     <!-- Scripts -->
     <script>
     document.getElementById('openAddModalButton').addEventListener('click', function() {

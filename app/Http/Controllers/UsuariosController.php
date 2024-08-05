@@ -52,17 +52,30 @@ class UsuariosController extends Controller
     public function storeUsuarios(Request $request)
     {
         // Validación de los datos recibidos
-        $request->validate([
+        $validator = \Validator::make($request->all(), [
             'nombres' => 'required|string|max:255',
             'apepat' => 'required|string|max:255',
             'apemat' => 'required|string|max:255',
-            'fechanac' => 'required|date',
+            'fechanac' => ['required', 'date', function ($attribute, $value, $fail) {
+                $age = \Carbon\Carbon::parse($value)->age;
+                if ($age < 18) {
+                    $fail('El usuario debe ser mayor de edad (18 años o más).');
+                }
+            }],
             'telefono' => 'required|string|max:20',
             'rol' => ['required', 'in:medico,secretaria,enfermera,admin'],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
-
+    
+        // Si la validación falla, redirige de vuelta con un mensaje de error
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', $validator->errors()->first());
+        }
+    
         // Creación del usuario con cifrado de la contraseña
         User::create([
             'nombres' => $request->nombres,
@@ -74,9 +87,54 @@ class UsuariosController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-
+    
         // Redirecciona a la vista de usuarios con un mensaje de éxito
         return redirect()->route('usuarios')->with('status', 'Usuario registrado correctamente');
+    }
+
+    // Actualiza la información de un usuario específico 
+    public function updateUsuario(Request $request, $id)
+    {
+        // Validación de los datos recibidos
+        $validator = \Validator::make($request->all(), [
+            'nombres' => 'required|string|max:255',
+            'apepat' => 'required|string|max:255',
+            'apemat' => 'required|string|max:255',
+            'fechanac' => ['required', 'date', function ($attribute, $value, $fail) {
+                $age = \Carbon\Carbon::parse($value)->age;
+                if ($age < 18) {
+                    $fail('El usuario debe ser mayor de edad (18 años o más).');
+                }
+            }],
+            'telefono' => 'required|string|max:20',
+            'rol' => ['required', 'in:medico,secretaria,enfermera,admin'],
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+    
+        // Si la validación falla, redirige de vuelta con un mensaje de error
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', $validator->errors()->first());
+        }
+    
+        // Encuentra el usuario y actualiza sus datos
+        $usuario = User::findOrFail($id);
+        $usuario->update([
+            'nombres' => $request->nombres,
+            'apepat' => $request->apepat,
+            'apemat' => $request->apemat,
+            'fechanac' => $request->fechanac,
+            'telefono' => $request->telefono,
+            'rol' => $request->rol,
+            'email' => $request->email,
+            'password' => $request->password ? bcrypt($request->password) : $usuario->password,
+        ]);
+    
+        // Redirecciona a la vista de usuarios con un mensaje de éxito
+        return redirect()->route('usuarios')->with('status', 'Usuario actualizado correctamente');
     }
 
     // Muestra el formulario para agregar un nuevo usuario
@@ -90,38 +148,6 @@ class UsuariosController extends Controller
     {
         $usuario = User::findOrFail($id);
         return response()->json($usuario);
-    }
-
-    // Actualiza la información de un usuario específico
-    public function updateUsuario(Request $request, $id)
-    {
-        // Validación de los datos recibidos
-        $request->validate([
-            'nombres' => 'required|string|max:255',
-            'apepat' => 'required|string|max:255',
-            'apemat' => 'required|string|max:255',
-            'fechanac' => 'required|date',
-            'telefono' => 'required|string|max:20',
-            'rol' => ['required', 'in:medico,secretaria,enfermera,admin'],
-            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-
-        // Encuentra el usuario y actualiza sus datos
-        $usuario = User::findOrFail($id);
-        $usuario->update([
-            'nombres' => $request->nombres,
-            'apepat' => $request->apepat,
-            'apemat' => $request->apemat,
-            'fechanac' => $request->fechanac,
-            'telefono' => $request->telefono,
-            'rol' => $request->rol,
-            'email' => $request->email,
-            'password' => $request->password ? bcrypt($request->password) : $usuario->password,
-        ]);
-
-        // Redirecciona a la vista de usuarios con un mensaje de éxito
-        return redirect()->route('usuarios')->with('status', 'Usuario actualizado correctamente');
     }
 
     // Marca a un usuario como inactivo (eliminado)

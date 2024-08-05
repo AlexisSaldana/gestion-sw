@@ -335,13 +335,13 @@
         </header>
         <div class="shadow ring-1 ring-black ring-opacity-5 lg:flex lg:flex-auto lg:flex-col">
             <div class="grid grid-cols-7 gap-px border-b border-gray-300 bg-gray-200 text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">
+                <div class="flex justify-center bg-white py-2"><span>S</span><span class="sr-only sm:not-sr-only">UN</span></div>
                 <div class="flex justify-center bg-white py-2"><span>M</span><span class="sr-only sm:not-sr-only">ON</span></div>
                 <div class="flex justify-center bg-white py-2"><span>T</span><span class="sr-only sm:not-sr-only">UE</span></div>
                 <div class="flex justify-center bg-white py-2"><span>W</span><span class="sr-only sm:not-sr-only">ED</span></div>
                 <div class="flex justify-center bg-white py-2"><span>T</span><span class="sr-only sm:not-sr-only">HU</span></div>
                 <div class="flex justify-center bg-white py-2"><span>F</span><span class="sr-only sm:not-sr-only">RI</span></div>
                 <div class="flex justify-center bg-white py-2"><span>S</span><span class="sr-only sm:not-sr-only">AT</span></div>
-                <div class="flex justify-center bg-white py-2"><span>S</span><span class="sr-only sm:not-sr-only">UN</span></div>
             </div>
             <div class="flex bg-gray-200 text-xs leading-6 text-gray-700 lg:flex-auto">
                 <div id="calendar-days" class="hidden w-full lg:grid lg:grid-cols-7 lg:grid-rows-6 lg:gap-px"></div>
@@ -351,7 +351,7 @@
     </div>
 
     <script>
-        function confirmDelete(citaId) {
+    function confirmDelete(citaId) {
         Swal.fire({
             title: '¿Está seguro de querer eliminar el paciente?',
             icon: 'question',
@@ -360,13 +360,14 @@
             cancelButtonColor: '#d33',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + citaId).submit();
-                }
-            });
-        }
-        document.addEventListener('DOMContentLoaded', function() {
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + citaId).submit();
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
         // Elementos del calendario
         const monthYearElement = document.getElementById('calendar-month-year');
         const calendarDaysElement = document.getElementById('calendar-days');
@@ -395,6 +396,11 @@
                 });
         }
 
+        function changeMonth(offset) {
+            currentDate.setMonth(currentDate.getMonth() + offset);
+            renderCalendar(currentDate);
+        }
+
         function renderCalendar(date) {
             const year = date.getFullYear();
             const month = date.getMonth();
@@ -421,11 +427,11 @@
                 const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
                 const citasForDay = citas.filter(cita => cita.event_date === dateString);
                 const dayCell = `<div class="relative calendar-day ${isToday ? 'font-semibold text-white' : ''}" data-date="${dateString}">
-                                <time datetime="${dateString}" class="day-number ${isToday ? 'rounded-full bg-blue-500 p-1' : ''}">${day}</time>
-                                <div class="events">
-                                    ${citasForDay.map(cita => `<div class="mt-1 text-sm text-blue-500" draggable="true" ondragstart="onDragStart(event)" data-id="${cita.id}">${cita.event_title} ${cita.event_time}</div>`).join('')}
-                                </div>
-                            </div>`;
+                                    <time datetime="${dateString}" class="day-number ${isToday ? 'rounded-full bg-blue-500 p-1' : ''}">${day}</time>
+                                    <div class="events">
+                                        ${citasForDay.map(cita => `<div class="mt-1 text-sm text-blue-500" draggable="true" ondragstart="onDragStart(event)" data-id="${cita.id}">${cita.event_title} ${cita.event_time}</div>`).join('')}
+                                    </div>
+                                </div>`;
                 calendarDaysElement.innerHTML += dayCell;
                 calendarDaysMobileElement.innerHTML += dayCell;
             }
@@ -591,4 +597,5 @@
         });
     });
     </script>
+
 </x-app-layout>
