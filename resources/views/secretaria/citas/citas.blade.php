@@ -353,7 +353,7 @@
     <script>
     function confirmDelete(citaId) {
         Swal.fire({
-            title: '¿Está seguro de querer eliminar el paciente?',
+            title: '¿Está seguro de querer eliminar la cita?',
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

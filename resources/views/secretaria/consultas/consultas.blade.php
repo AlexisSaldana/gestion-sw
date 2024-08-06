@@ -84,11 +84,16 @@
                                         @if(auth()->user()->hasRole(['medico']))
                                             <td class="px-6 py-4">
                                                 @if($cita->consulta)
-                                                    <a href="{{ route('consultas.edit', ['id' => $cita->consulta->id]) }}" class="text-blue-500 hover:text-blue-700">Editar Consulta</a>
+                                                    @if($cita->consulta->estado == 'Finalizado')
+                                                        <span class="text-green-500">Pagado</span>
+                                                    @else
+                                                        <a href="{{ route('consultas.edit', ['id' => $cita->consulta->id]) }}" class="text-blue-500 hover:text-blue-700">Editar Consulta</a>
+                                                    @endif
                                                 @else
                                                     <a href="{{ route('consultas.create', ['citaId' => $cita->id]) }}" class="text-blue-500 hover:text-blue-700">Tomar Consulta</a>
                                                 @endif
                                             </td>
+
                                             <td class="px-6 py-4">
                                                 @if($cita->consulta)
                                                     <a href="{{ route('consultas.descargarPorCodigo', ['codigo' => $cita->consulta->codigo]) }}" class="text-green-500 hover:text-green-700">Descargar PDF</a>
