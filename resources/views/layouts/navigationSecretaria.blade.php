@@ -1,4 +1,4 @@
-<div class="relative flex flex-col h-auto w-60 bg-white text-gray-700 shadow-xl m-5 rounded-xl border-red-500">
+<div class="relative flex flex-col h-auto w-60 bg-white text-gray-700 shadow-xl ml-5 my-5 rounded-xl border-red-500">
     <div class="p-4 mb-2 flex items-center">
         <img src="{{URL::asset('img/logo.png')}}" class=" w-16 rounded">
         <h5 class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-cyan-500">

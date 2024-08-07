@@ -80,9 +80,19 @@ class ConsultasController extends Controller
     // Mostrar las citas pendientes para tomar una consulta
     public function index(Request $request)
     {
-        $query = Citas::query()->with(['paciente', 'usuarioMedico', 'consulta']);
+        $user = auth()->user(); // Obtener el usuario autenticado
     
-        // Filtros de búsqueda por términos
+        $query = Citas::query()
+            ->with(['paciente', 'usuarioMedico', 'consulta'])
+            ->where('usuariomedicoid', $user->id) // Filtrar citas del médico autenticado
+            ->where(function ($query) {
+                $query->where('activo', '!=', 'no') // Excluir citas inactivas
+                      ->orWhereHas('consulta', function($q) {
+                          $q->whereNotNull('estado'); // Incluir solo si la consulta tiene un estado
+                      });
+            });
+    
+        // Aplicar filtros adicionales si existen
         if ($request->has('busqueda') && $request->busqueda != '') {
             $terms = explode(' ', $request->busqueda);
             $query->where(function($q) use ($terms) {
@@ -100,15 +110,12 @@ class ConsultasController extends Controller
             });
         }
     
-        // Filtro por fecha
         if ($request->has('fecha') && $request->fecha != '') {
             $query->where('fecha', '=', $request->fecha);
         } else {
-            // Filtro por defecto desde hoy en adelante
             $query->where('fecha', '>=', Carbon::today()->toDateString());
         }
     
-        // Filtro por estado
         if ($request->has('estado') && $request->estado != '') {
             $estado = $request->estado == 'en proceso' ? 'En proceso' : 'Finalizado';
             $query->whereHas('consulta', function($q) use ($estado) {
@@ -116,9 +123,7 @@ class ConsultasController extends Controller
             });
         }
     
-        // Ordenar por fecha
         $query->orderBy('fecha', 'asc');
-    
         $citas = $query->get();
     
         return view('secretaria.consultas.consultas', compact('citas'));

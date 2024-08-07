@@ -13,8 +13,11 @@ class CitasController extends Controller
 {
     public function mostrarCitas(Request $request)
     {
-        $query = Citas::query()->with(['paciente', 'usuarioMedico']);
+        $user = auth()->user(); // Obtener el usuario autenticado
     
+        $query = Citas::query()->with(['paciente', 'usuarioMedico'])
+            ->where('usuariomedicoid', $user->id); // Filtrar citas del médico autenticado
+        
         // Filtros de búsqueda
         if ($request->has('busqueda') && $request->busqueda != '') {
             $terms = explode(' ', $request->busqueda);
@@ -33,26 +36,26 @@ class CitasController extends Controller
                 }
             });
         }
-
+    
         // Filtro por fecha específica
         if ($request->has('fecha') && $request->fecha != '') {
             $query->where('fecha', '=', $request->fecha);
         }
-    
+        
         $this->actualizarCitasPasadas();
-    
+        
         // Obtener citas activas y filtradas
         $citas = $query->where('activo', 'si')->orderBy('fecha', 'asc')->get();
         $pacientes = Paciente::where('activo', 'si')->get();
         $medicos = User::Where('rol', 'medico')->get();
-    
+        
         $totalCitasActivas = Citas::where('activo', 'si')->count();
         $totalPacientesActivos = Paciente::where('activo', 'si')->count();
         $totalUsuariosActivos = User::where('activo', 'si')
                                     ->whereIn('rol', ['medico', 'secretaria','enfermera'])
                                     ->count();
         $usuario = auth()->user();
-    
+        
         return view('secretaria.citas.citas', compact('citas', 'usuario', 'pacientes', 'medicos', 'totalCitasActivas', 'totalPacientesActivos', 'totalUsuariosActivos'));
     }
     
@@ -141,9 +144,15 @@ class CitasController extends Controller
     
     public function getEvents()
     {
-        $citas = Citas::with(['paciente', 'usuarioMedico'])->where('activo', 'si')->get();
+        $user = auth()->user(); // Obtener el usuario autenticado
+    
+        // Obtener las citas del médico autenticado
+        $citas = Citas::with(['paciente', 'usuarioMedico'])
+                      ->where('usuariomedicoid', $user->id) // Filtrar por el ID del médico autenticado
+                      ->where('activo', 'si')
+                      ->get();
         
-        // Map the appointments to event data
+        // Mapear las citas a datos de eventos para el calendario
         $events = $citas->map(function ($cita) {
             return [
                 'event_date' => $cita->fecha,
@@ -151,9 +160,10 @@ class CitasController extends Controller
                 'event_time' => $cita->hora,
             ];
         });
-
+    
         return response()->json($events);
     }
+    
 
     public function editarCita($id)
     {

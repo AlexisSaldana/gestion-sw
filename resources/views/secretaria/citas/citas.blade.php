@@ -19,9 +19,9 @@
             });
         </script>
     @endif
-    
-    <div class="pt-5">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+
+    <div class="pt-5 mx-5">
+        <div class="max-w-full mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
@@ -32,7 +32,7 @@
                         <!-- Search Form -->
                         <form method="GET" action="{{ route('citas') }}" class="flex my-4 mx-4 items-center">
                             <div class="flex text-center border rounded-md items-center px-2">
-                                <input type="text" name="busqueda" placeholder="Buscar médico, paciente o fecha" class="border-0" value="{{ request('busqueda') }}">
+                                <input type="text" name="busqueda" placeholder="Buscar" class="border-0" value="{{ request('busqueda') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray" class="size-5">
                                     <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd" />
                                 </svg>
@@ -46,45 +46,48 @@
                             </button>
                         </form>
 
-                        <!-- Table -->
-                        <table class="min-w-full text-center text-sm whitespace-nowrap">
-                            <!-- Table head -->
-                            <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4">Médico</th>
-                                    <th scope="col" class="px-6 py-4">Paciente</th>
-                                    <th scope="col" class="px-6 py-4">Fecha</th>
-                                    <th scope="col" class="px-6 py-4">Hora</th>
-                                    <th scope="col" class="px-6 py-4">Acciones</th>
-                                </tr>
-                            </thead>
-
-                            <!-- Table body -->
-                            <tbody>
-                                @foreach($citas as $cita)
+                        <!-- Table wrapper with scroll -->
+                        <div class="max-h-80 overflow-y-auto">
+                            <!-- Table -->
+                            <table class="min-w-full text-center text-sm whitespace-nowrap">
+                                <!-- Table head -->
+                                <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800">
                                     <tr>
-                                        <td class="px-6 py-4">{{ $cita->usuarioMedico->nombres }} {{ $cita->usuarioMedico->apepat }}</td>
-                                        <td class="px-6 py-4">{{ $cita->paciente->nombres }} {{ $cita->paciente->apepat }} {{ $cita->paciente->apemat }}</td>
-                                        <td class="px-6 py-4">{{ $cita->fecha }}</td>
-                                        <td class="px-6 py-4">{{ $cita->hora }}</td>
-                                        <td class="px-6 py-4">
-                                            <!-- Botón para editar la cita -->
-                                            <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $cita->id }}">
-                                                Editar
-                                            </button>
-                                            @if(auth()->user()->hasRole(['medico', 'admin']))
-                                                <!-- Botón para eliminar la cita -->
-                                                <button class="text-red-500 hover:text-red-700 ml-4" onclick="confirmDelete({{ $cita->id }})">Eliminar</button>
-                                                <form id="delete-form-{{ $cita->id }}" action="{{ route('citas.eliminar', $cita->id) }}" method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            @endif
-                                        </td>
+                                        <th scope="col" class="px-6 py-4">Médico</th>
+                                        <th scope="col" class="px-6 py-4">Paciente</th>
+                                        <th scope="col" class="px-6 py-4">Fecha</th>
+                                        <th scope="col" class="px-6 py-4">Hora</th>
+                                        <th scope="col" class="px-6 py-4">Acciones</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+
+                                <!-- Table body -->
+                                <tbody>
+                                    @foreach($citas as $cita)
+                                        <tr>
+                                            <td class="px-6 py-4">{{ $cita->usuarioMedico->nombres }} {{ $cita->usuarioMedico->apepat }}</td>
+                                            <td class="px-6 py-4">{{ $cita->paciente->nombres }} {{ $cita->paciente->apepat }} {{ $cita->paciente->apemat }}</td>
+                                            <td class="px-6 py-4">{{ $cita->fecha }}</td>
+                                            <td class="px-6 py-4">{{ $cita->hora }}</td>
+                                            <td class="px-6 py-4">
+                                                <!-- Botón para editar la cita -->
+                                                <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $cita->id }}">
+                                                    Editar
+                                                </button>
+                                                @if(auth()->user()->hasRole(['medico', 'admin']))
+                                                    <!-- Botón para eliminar la cita -->
+                                                    <button class="text-red-500 hover:text-red-700 ml-4" onclick="confirmDelete({{ $cita->id }})">Eliminar</button>
+                                                    <form id="delete-form-{{ $cita->id }}" action="{{ route('citas.eliminar', $cita->id) }}" method="POST" style="display: none;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                         <!-- Mensaje si no hay citas registradas -->
                         @if($citas->isEmpty())
                             <p class="text-center text-gray-500 mt-4">No hay citas registradas.</p>
@@ -145,6 +148,8 @@
                                 <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <input type="hidden" id="medicoActual" value="{{ auth()->user()->id }}">
 
                             <div class="flex items-center justify-end mt-4">
                                 <button class="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 border border-gray-700 rounded-lg shadow-sm">
@@ -234,6 +239,8 @@
                             <div class="text-red-600 text-sm mt-2">{{ $message }}</div>
                             @enderror
                         </div>
+
+                        <input type="hidden" id="medicoActual" value="{{ auth()->user()->id }}">
 
                         <div class="flex items-center justify-end mt-4">
                             <button type="button" class="bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 border border-gray-300 rounded-lg shadow-sm mr-2" id="close-modal">Cancelar</button>
@@ -351,6 +358,39 @@
     </div>
 
     <script>
+    document.getElementById('modal-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        verificarMedico(this);
+    });
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        verificarMedico(this);
+    });
+
+    function verificarMedico(form) {
+        const medicoSeleccionado = form.querySelector('#usuariomedicoid').value;
+        const medicoActual = document.getElementById('medicoActual').value;
+
+        if (medicoSeleccionado !== medicoActual) {
+            Swal.fire({
+                icon: 'warning',
+                title: '¿Está seguro?',
+                text: 'Está asignando una cita a un médico diferente al que ha iniciado sesión.',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, continuar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        } else {
+            form.submit();
+        }
+    }
+    
     function confirmDelete(citaId) {
         Swal.fire({
             title: '¿Está seguro de querer eliminar la cita?',
@@ -597,5 +637,4 @@
         });
     });
     </script>
-
 </x-app-layout>

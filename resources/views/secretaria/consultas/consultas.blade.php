@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="pt-5">
-        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+    <div class="pt-5 mx-5">
+        <div class="max-w-full mx-auto">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
@@ -67,7 +67,7 @@
                                             </td>
                                         @endif
                                         <td class="px-6 py-4">{{ $cita->usuarioMedico->nombres }} {{ $cita->usuarioMedico->apepat }}</td>
-                                        <td class="px-6 py-4">{{ $cita->paciente->nombres }} {{ $cita->paciente->apepat }} {{ $cita->paciente->apemat }}</td>
+                                        <td class="px-6 py-4">{{ $cita->paciente->nombres }} {{ $cita->paciente->apepat . " (" . $cita->paciente->telefono . ")" }}</td>
                                         <td class="px-6 py-4">{{ $cita->fecha }}</td>
                                         <td class="px-6 py-4">{{ $cita->hora }}</td>
 
