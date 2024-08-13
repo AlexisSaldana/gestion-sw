@@ -78,7 +78,7 @@ class AuthenticatedSessionController extends Controller
             case 'admin':
                 return redirect()->route('dashboard');
             case 'secretaria':
-                return redirect()->route('dashboardSecretaria');
+                return redirect()->route('citas');
             default:
                 return redirect('/');
         }
