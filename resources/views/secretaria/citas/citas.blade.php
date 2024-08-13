@@ -375,16 +375,7 @@
         if (medicoSeleccionado !== medicoActual) {
             Swal.fire({
                 icon: 'warning',
-                title: '¿Está seguro?',
-                text: 'Está asignando una cita a un médico diferente al que ha iniciado sesión.',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Sí, continuar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+                title: 'Está asignando una cita a un médico diferente al que ha iniciado sesión.',
             });
         } else {
             form.submit();

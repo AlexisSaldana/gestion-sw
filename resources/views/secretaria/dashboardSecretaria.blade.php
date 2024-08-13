@@ -1,9 +1,5 @@
 <x-app-layout>
-    <div class="m-5">
-        @include('estadistica')
-    </div>
-
-    <div class="max-w-full mx-auto sm:px-5 lg:px-5">
+    <div class="m-5 max-w-full mx-auto sm:px-5 lg:px-5">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <div class="p-6 text-gray-900">
                 <div class="overflow-x-auto bg-white dark:bg-neutral-700">

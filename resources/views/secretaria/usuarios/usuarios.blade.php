@@ -6,9 +6,11 @@
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
                         <div class="flex my-4 mx-4 items-center justify-between">
                             <h1 class="text-xl font-bold text-gray-900 uppercase">Lista de Usuarios</h1>
-                            <button id="openAddModalButton" class="ml-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
-                                {{ __('Agregar Usuario') }}
-                            </button>
+                            @if(auth()->user()->hasRole(['admin']))
+                                <button id="openAddModalButton" class="ml-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600">
+                                    {{ __('Agregar Usuario') }}
+                                </button>
+                            @endif
                         </div>
 
                         <!-- Search Form -->
@@ -63,7 +65,7 @@
                                             <button class="openEditModalButton text-blue-500 hover:text-blue-700" data-id="{{ $usuario->id }}">
                                                 Editar
                                             </button>
-                                            @if(auth()->user()->hasRole(['medico', 'admin']))
+                                            @if(auth()->user()->hasRole(['admin']))
                                                 <!-- Botón para eliminar el usuario -->
                                                 <form action="{{ route('usuarios.eliminar', $usuario->id) }}" method="POST" class="inline-block">
                                                     @csrf

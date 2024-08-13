@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\ConsultasController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\PacientesController;
 use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\ProductosController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\Upload;
 use Illuminate\Support\Facades\Route;
 
 // Ruta de la página de bienvenida
@@ -72,6 +74,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/citas/verificar', [CitasController::class, 'verificarCita'])->name('citas.verificar');
     Route::get('/consultas/{id}', [ConsultasController::class, 'show'])->name('consultas.show');
 
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     // Rutas del data table
     Route::get('/buscar-pacientes', [PacientesController::class, 'buscarPacientes'])->name('pacientes.buscar');
 
@@ -81,3 +86,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Rutas de autenticación generadas por Laravel Breeze
 require __DIR__.'/auth.php';
+
+Route::post('/upload', [Upload::class, 'upload']);

@@ -52,7 +52,6 @@
             <select id="rol" name="rol" class="mt-1 block w-full" required>
                 <option value="medico" {{ old('rol', $user->rol) == 'medico' ? 'selected' : '' }}>Médico</option>
                 <option value="secretaria" {{ old('rol', $user->rol) == 'secretaria' ? 'selected' : '' }}>Secretaria</option>
-                <option value="colaborador" {{ old('rol', $user->rol) == 'colaborador' ? 'selected' : '' }}>Colaborador</option>
                 <option value="admin" {{ old('rol', $user->rol) == 'admin' ? 'selected' : '' }}>Admin</option>
             </select>
             <x-input-error class="mt-2" :messages="$errors->get('rol')" />

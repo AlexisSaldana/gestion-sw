@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ConsultasController extends Controller
 {
-
     // Método para descargar el PDF
     public function downloadPDF($id)
     {
@@ -83,14 +82,19 @@ class ConsultasController extends Controller
         $user = auth()->user(); // Obtener el usuario autenticado
     
         $query = Citas::query()
-            ->with(['paciente', 'usuarioMedico', 'consulta'])
-            ->where('usuariomedicoid', $user->id) // Filtrar citas del médico autenticado
-            ->where(function ($query) {
-                $query->where('activo', '!=', 'no') // Excluir citas inactivas
-                      ->orWhereHas('consulta', function($q) {
-                          $q->whereNotNull('estado'); // Incluir solo si la consulta tiene un estado
-                      });
-            });
+            ->with(['paciente', 'usuarioMedico', 'consulta']);
+    
+        // Si el usuario no es administrador, filtrar las citas del médico autenticado
+        if ($user->rol !== 'admin') {
+            $query->where('usuariomedicoid', $user->id);
+        }
+        
+        $query->where(function ($query) {
+            $query->where('activo', '!=', 'no') // Excluir citas inactivas
+                  ->orWhereHas('consulta', function($q) {
+                      $q->whereNotNull('estado'); // Incluir solo si la consulta tiene un estado
+                  });
+        });
     
         // Aplicar filtros adicionales si existen
         if ($request->has('busqueda') && $request->busqueda != '') {
@@ -128,6 +132,7 @@ class ConsultasController extends Controller
     
         return view('secretaria.consultas.consultas', compact('citas'));
     }
+    
     
     // Mostrar el formulario para crear una nueva consulta
     public function create($citaId)
