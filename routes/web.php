@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/secretaria/citas/editar/{id}', [CitasController::class, 'updateCita'])->name('citas.update');
     Route::delete('/secretaria/citas/eliminar/{id}', [CitasController::class, 'eliminarCita'])->name('citas.eliminar');
     Route::get('/get-events', [CitasController::class, 'getEvents']);
+    Route::post('/obtener-citas-por-fecha', [CitasController::class, 'obtenerCitasPorFecha'])->name('citas.obtenerPorFecha');
 
     // Rutas de Usuarios
     Route::get('/secretaria/usuarios', [UsuariosController::class, 'mostrarUsuarios'])->name('usuarios');
@@ -86,5 +87,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Rutas de autenticación generadas por Laravel Breeze
 require __DIR__.'/auth.php';
-
-Route::post('/upload', [Upload::class, 'upload']);

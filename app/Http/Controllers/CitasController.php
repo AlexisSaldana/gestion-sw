@@ -11,23 +11,6 @@ use Carbon\Carbon;
 
 class CitasController extends Controller
 {
-    public function getCitasPorFecha(Request $request)
-    {
-        $user = auth()->user();
-
-        $query = Citas::query()->with(['paciente', 'usuarioMedico'])
-            ->where('fecha', $request->fecha); // Filtrar por fecha
-        
-        if ($user->rol !== 'admin') {
-            // Filtrar las citas del médico autenticado si no es admin
-            $query->where('usuariomedicoid', $user->id);
-        }
-
-        $citas = $query->get();
-
-        return response()->json($citas);
-    }
-
     public function mostrarCitas(Request $request)
     {
         $user = auth()->user(); // Obtener el usuario autenticado
@@ -196,4 +179,32 @@ class CitasController extends Controller
         
         return response()->json($cita);
     }  
+
+    public function obtenerCitasPorFecha(Request $request)
+    {
+        // Validar que la fecha esté presente en la solicitud
+        $request->validate([
+            'fecha' => 'required|date',
+        ]);
+    
+        // Obtener el usuario autenticado
+        $user = auth()->user();
+    
+        // Construir la consulta para obtener las citas en la fecha especificada
+        $query = Citas::query()->with(['paciente', 'usuarioMedico'])
+            ->where('fecha', $request->fecha)
+            ->where('activo', 'si'); // Filtrar solo las citas activas
+
+    
+        // Filtrar las citas por el médico autenticado si no es admin
+        if ($user->rol !== 'admin') {
+            $query->where('usuariomedicoid', $user->id);
+        }
+    
+        // Obtener las citas
+        $citas = $query->get();
+    
+        // Retornar las citas como JSON, incluyendo los datos del médico
+        return response()->json($citas);
+    }
 }

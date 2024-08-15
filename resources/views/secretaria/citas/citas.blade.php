@@ -467,39 +467,55 @@
                 calendarDaysMobileElement.innerHTML += dayCell;
             }
 
+            // Agregar eventos click a los días del calendario después de renderizarlos
             document.querySelectorAll('.calendar-day').forEach(day => {
-                day.addEventListener('dragover', event => event.preventDefault());
-                day.addEventListener('drop', onDrop);
-            });
-        }
+                        day.addEventListener('click', function() {
+                            const selectedDate = this.getAttribute('data-date');
+                            fetch(`/obtener-citas-por-fecha`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                },
+                                body: JSON.stringify({ fecha: selectedDate }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                let citasHtml = '';
+                                if (data.length > 0) {
+                                    citasHtml = data.map(cita => `
+                                        <div>
+                                            <strong>${cita.paciente.nombres} ${cita.paciente.apepat} ${cita.paciente.apemat}</strong> - ${cita.hora}
+                                            <p><em>Médico: ${cita.usuario_medico.nombres} ${cita.usuario_medico.apepat}</em></p>
+                                        </div>
+                                    `).join('');
+                                } else {
+                                    citasHtml = '<p>No hay citas para este día.</p>';
+                                }
 
-        function onDragStart(event) {
-            event.dataTransfer.setData('text/plain', event.target.dataset.id);
-        }
-
-        function onDrop(event) {
-            event.preventDefault();
-            const citaId = event.dataTransfer.getData('text/plain');
-            const dropDate = event.target.closest('.calendar-day').querySelector('.day-number').getAttribute('datetime');
-
-            fetch(`/secretaria/citas/mover/${citaId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify({ fecha: dropDate }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    fetchEvents();
-                } else {
-                    console.error('Error al mover la cita:', data.error);
+                                // Mostrar el SweetAlert con las citas
+                                Swal.fire({
+                                    title: `Citas para ${selectedDate}`,
+                                    html: citasHtml,
+                                    icon: 'info',
+                                    confirmButtonText: 'Cerrar'
+                                });
+                            })
+                            .catch(error => {
+                                console.error('Error al obtener las citas:', error);
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: 'Ocurrió un problema al obtener las citas. Por favor, inténtalo de nuevo más tarde.',
+                                    icon: 'error',
+                                    confirmButtonText: 'Cerrar'
+                                });
+                            });
+                        });
+                    });
                 }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+
+    // Llamar a fetchEvents para obtener los eventos y renderizar el calendario
+    fetchEvents();
 
         prevMonthButton.addEventListener('click', () => changeMonth(-1));
         nextMonthButton.addEventListener('click', () => changeMonth(1));
