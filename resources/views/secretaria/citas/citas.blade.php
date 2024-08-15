@@ -22,7 +22,7 @@
 
     <div class="pt-5 mx-5">
         <div class="max-w-full mx-auto">
-            <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-xl sm:rounded-xl">
                 <div class="p-6 text-gray-900">
                     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
                         <div class="flex my-4 mx-4 items-center justify-between">
@@ -317,7 +317,7 @@
     </div>
 
     <!-- Calendar -->
-    <div class="m-6 bg-white lg:flex lg:h-full lg:flex-col">
+    <div class="m-6 bg-white lg:flex lg:h-full lg:flex-col shadow-xl rounded-xl">
         <header class="flex items-center justify-between border-b border-gray-200 px-6 py-4 lg:flex-none">
             <h1 class="text-base font-semibold leading-6 text-gray-900" id="calendar-month-year"></h1>
             <div class="flex items-center">

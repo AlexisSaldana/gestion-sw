@@ -28,23 +28,6 @@
                             </div>
                         </div>
 
-                        <div class="flex flex-wrap items-center justify-between gap-4">
-                            <div class="flex items-center">
-                                <input id="remember_me" name="remember" type="checkbox" class="h-4 w-4 shrink-0 text-cyan-700 focus:ring-cyan-500 border-gray-300 rounded" />
-                                <label for="remember_me" class="ml-3 block text-sm text-gray-800">
-                                    {{ __('Recuérdame') }}
-                                </label>
-                            </div>
-
-                            <div class="text-sm">
-                                @if (Route::has('password.request'))
-                                    <a class="text-cyan-700 hover:underline font-semibold" href="{{ route('password.request') }}">
-                                        {{ __('Olvidaste tu contraseña?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-
                         <div class="!mt-8">
                             <button class="w-full justify-center shadow-xl py-3 font-semibold tracking-wide rounded-xl text-white bg-cyan-700 hover:bg-cyan-900 focus:outline-none">
                                 {{ __('Iniciar Sesión') }}
