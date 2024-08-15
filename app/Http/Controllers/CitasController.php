@@ -34,7 +34,7 @@ class CitasController extends Controller
         
         $query = Citas::query()->with(['paciente', 'usuarioMedico']);
         
-        if ($user->rol !== 'admin') {
+        if ($user->rol !== 'admin' && $user->rol !== 'secretaria') {
             // Filtrar citas del médico autenticado si no es admin
             $query->where('usuariomedicoid', $user->id);
         }
@@ -79,7 +79,6 @@ class CitasController extends Controller
         
         return view('secretaria.citas.citas', compact('citas', 'usuario', 'pacientes', 'medicos', 'totalCitasActivas', 'totalPacientesActivos', 'totalUsuariosActivos'));
     }
-    
     
     private function actualizarCitasPasadas()
     {
@@ -172,7 +171,7 @@ class CitasController extends Controller
         $query = Citas::with(['paciente', 'usuarioMedico'])->where('activo', 'si');
         
         // Filtrar por el ID del médico autenticado si no es administrador
-        if ($user->rol !== 'admin') {
+        if ($user->rol !== 'admin' && $user->rol !== 'secretaria') {
             $query->where('usuariomedicoid', $user->id);
         }
     
@@ -190,7 +189,6 @@ class CitasController extends Controller
     
         return response()->json($events);
     }
-    
     
     public function editarCita($id)
     {

@@ -1,4 +1,4 @@
-<div>
+<div class="font-poppins">
   <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
     <!-- Total de todas las consultas -->
@@ -87,7 +87,7 @@
   </dl>
 </div>
 
-<div class="relative flex flex-col rounded-xl bg-white bg-clip-border shadow-xl mt-5 h-full">
+<div class="font-poppins relative flex flex-col rounded-xl bg-white bg-clip-border shadow-xl mt-5">
   <div class="relative mx-4 mt-4 flex flex-col gap-4 overflow-hidden bg-transparent bg-clip-border text-gray-700 shadow-none md:flex-row md:items-center">
     <div class="w-max rounded-lg bg-cyan-500 p-5 text-white">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" aria-hidden="true" class="h-6 w-6">
@@ -95,10 +95,10 @@
       </svg>
     </div>
     <div>
-      <h6 class="block font-sans text-base font-semibold leading-relaxed tracking-normal text-cyan-500 antialiased">
+      <h6 class="block text-base font-semibold leading-relaxed tracking-normal text-cyan-500 antialiased">
         Estadísticas de Care Center
       </h6>
-      <p class="block max-w-sm font-sans text-sm font-normal leading-normal text-gray-700 antialiased">
+      <p class="block max-w-sm text-sm font-normal leading-normal text-gray-700 antialiased">
         Visualiza todas las estadísticas día tras día.
       </p>
     </div>

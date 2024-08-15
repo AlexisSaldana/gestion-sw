@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -11,6 +10,9 @@
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
   <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+ 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 
   <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -26,20 +28,30 @@
 
     <!-- Sección Hero -->
     <section id="hero" class="hero section">
+        <div class="container">
+            <div class="row gy-4">
+                <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
+                    <h1 class="text-3xl lg:text-5xl font-bold">
+                        Cuidando tu salud, cuidando tu futuro.
+                    </h1>
+                    <p class="text-lg mt-4">
+                        Programa tus citas y consultas con nuestros especialistas.
+                    </p>
+                    
+                    <form method="GET" action="/consultas/descargar" class="d-flex align-items-center">
+                        <input type="text" name="codigo" placeholder="Ingresar código" class="form-control me-2" required>
+                        <button type="submit" class="text-white  font-semibold rounded-xl px-3 bg-cyan-700 w-72 py-2 tracking-wide hover:bg-cyan-900">Descargar PDF</button>
+                    </form>
 
-      <div class="container">
-        <div class="row gy-4">
-          <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="zoom-out">
-          <h1 class="text-3xl lg:text-5xl font-bold">Cuidando Tu Salud, Cuidando Tu Futuro</h1>
-          <p class="text-lg mt-4">Programa tus citas y consultas con nuestros especialistas.</p>
-          <div class="d-flex">
+                    <div class="d-flex">
+                    </div>
+                </div>
+                    <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
+                        <img src="{{ asset('assets/img/Doctors-pana.png') }}" class="img-fluid animated" alt="">
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="200">
-            <img src="{{ asset('assets/img/Doctors-pana.png') }}" class="img-fluid animated" alt="">
-          </div>
         </div>
-      </div>
 
     </section><!-- /Sección Hero -->
 <!-- component -->

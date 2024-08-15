@@ -1,12 +1,12 @@
-<div class="relative flex flex-col h-auto w-60 bg-white text-gray-700 shadow-xl ml-5 my-5 rounded-xl border-red-500">
+<div class="font-poppins relative flex flex-col h-auto w-60 bg-white text-gray-700 shadow-xl ml-5 my-5 rounded-xl border-red-500">
     <div class="p-4 mb-2 flex items-center">
         <img src="{{URL::asset('img/logo.png')}}" class=" w-16 rounded">
-        <h5 class="block font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-cyan-500">
+        <h5 class="block text-xl antialiased font-semibold leading-snug tracking-wide text-cyan-500">
             Care Center
         </h5>
     </div>
     
-    <nav class="flex min-w-[240px] flex-col gap-2 p-6 font-sans text-base font-normal text-blue-gray-700">
+    <nav class="flex min-w-[240px] flex-col gap-2 p-6 text-base font-normal text-blue-gray-700">
         @if(auth()->user()->hasRole(['admin']))
             <a href="{{ route('dashboard') }}" role="button"
             class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
@@ -31,16 +31,18 @@
             Citas
         </a>
 
-        <a href="{{ route('consultas.index') }}" role="button"
-           class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
-           {{ request()->routeIs('consultas.index') ? 'bg-blue-gray-50 text-cyan-500' : 'text-blue-gray-700' }}">
-            <div class="grid mr-4 place-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-            </svg>
-            </div>
-            Consultas
-        </a>
+        @if(auth()->user()->hasRole(['admin','medico']))
+            <a href="{{ route('consultas.index') }}" role="button"
+            class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
+            {{ request()->routeIs('consultas.index') ? 'bg-blue-gray-50 text-cyan-500' : 'text-blue-gray-700' }}">
+                <div class="grid mr-4 place-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
+                </div>
+                Consultas
+            </a>
+        @endif
 
         <a href="{{ route('dashboardSecretaria') }}" role="button"
            class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
@@ -53,16 +55,18 @@
             Pacientes
         </a>
 
-        <a href="{{ route('usuarios') }}" role="button"
-           class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
-           {{ request()->routeIs('usuarios') ? 'bg-blue-gray-50 text-cyan-500' : 'text-blue-gray-700' }}">
-            <div class="grid mr-4 place-items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-                </svg>
-            </div>
-            Usuarios
-        </a>
+        @if(auth()->user()->hasRole(['admin']))
+            <a href="{{ route('usuarios') }}" role="button"
+            class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
+            {{ request()->routeIs('usuarios') ? 'bg-blue-gray-50 text-cyan-500' : 'text-blue-gray-700' }}">
+                <div class="grid mr-4 place-items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+                    </svg>
+                </div>
+                Usuarios
+            </a>
+        @endif
         
         <a href="{{ route('servicios') }}" role="button" class="flex items-center w-full p-3 leading-tight transition-all rounded-lg outline-none text-start hover:text-cyan-500 hover:bg-opacity-80 focus:bg-blue-gray-50 focus:bg-opacity-80 active:bg-blue-gray-50 active:bg-opacity-80 
         {{ request()->routeIs('servicios') ? 'bg-blue-gray-50 text-cyan-500' : 'text-blue-gray-700' }}">

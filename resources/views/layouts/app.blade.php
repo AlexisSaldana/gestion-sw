@@ -8,9 +8,10 @@
     <title>@yield('title', config('app.name', 'Laravel'))</title>
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
@@ -65,7 +66,7 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
 
 </head>
-<body class="font-sans antialiased">
+<body class="font-poppins antialiased">
     <div class="min-h-screen bg-gray-100 flex">
         @include('layouts.navigationSecretaria')
 
